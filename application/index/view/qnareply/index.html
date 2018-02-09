@@ -1,0 +1,156 @@
+{include file="header/index" header_type="$header_type" /}
+<link rel="stylesheet" href="/static/css/reveal.css">
+<script src="/static/js/wangEditor.min.js"></script>
+<div style="background-color:#F2F2F2;">
+    <div style="margin:0 auto; width:1200px;">
+        <div style="text-align:left;">
+            <div style="height:10px";></div>
+            <div class="content_box" id="loading" style="height:2000px; text-align:center">
+                <div style="height:200px;"><img src="/static/images/loading.gif"></div>
+            </div>
+            <div class="content_box" id="content">
+            <div class="header_title split_left"><span class="am-icon-comment am-icon-sm" style="color:#900;"></span> 提问者：
+            <img src="{if condition="$reply_detail.qna_personal_pic == ''"}/static/images/profile_pic.jpg{else /}{$reply_detail.qna_personal_pic}{/if}" class="user_pic_small" style="margin-right:20px;">  <span class="header_title" style="cursor:pointer;" onclick="window.location.href='/index/userreplydetail?userid={$reply_detail.qna_userid}';">{$reply_detail.qna_username}</span> {if condition="$qna_userinfo.gender"}{if condition="$qna_userinfo.gender == '1'"}<span class="am-icon-mars am-icon-sm" style="color:#06C;" title="男"></span> {else /}<span class="am-icon-venus am-icon-sm" style="color:#900;" title="女"></span> {/if}{/if}
+            {if condition="$header_type == 'user'"} 
+            {if condition="$userid != $reply_detail.qna_userid"}
+            {if condition="$reply_detail['qna_user_att'] == '-1'"}
+            <button type="button" class="btn btn-default button_grey" id="attBtn1" onclick="attUser('{$reply_detail.qna_userid}','1');this.disabled='disabled';" style="margin-left:20px;"><i class="am-icon-plus am-icon-sm"></i> 关注TA</button>
+            {else /}
+            <button type="button" class="btn btn-default button_white" style="width:auto; margin-left:20px;"><i class="am-icon-user-plus am-icon-sm"></i> 已关注</button>
+            {/if}
+            {/if}
+            {/if}
+            </div>
+            <div class="split_right" style="padding-top:18px; color:#03C; font-weight:bold;">{if condition="$reply_detail.formatCoins > 0"}<span class="am-icon-bitcoin am-icon-sm" style="color:#FC0;" title="悬赏"></span> {$reply_detail.formatCoins}{else /}<span class="am-icon-send am-icon-sm" style="color:#06C;" title="公开"></span>{/if}</div>
+            <div style="clear:both;"></div>
+            {if condition="$qna_userinfo.brief != ''"}<div style="padding-top:10px; padding-bottom:10px;">自我简介：{$qna_userinfo.brief}</div>{/if}
+            {if condition="$qna_tag_list != ''"}<div style="line-height:50px;" class="tagwrap"><span class="am-icon-tags am-icon-sm" style="color:#06C;"></span> TA的标签： {volist name="qna_tag_list" id="usertag"}{if condition="$i==6"} <span class="tag_more" onclick="showAllTags('qna');" id="qna_tag_more">更多...</span> <span class="tag" id="qna_tag{$i}" style="display:none;">{$usertag.tag}</span>{else /}{if condition="$i>5"} <span class="tag" id="qna_tag{$i}" style="display:none;">{$usertag.tag}</span>{else /} <span class="tag">{$usertag.tag}</span>{/if}{/if}{/volist} <span class="tag_more" onclick="hideAllTags('qna');" id="qna_tag_less" style="display:none;">收起</span></div>{/if}
+            <div style="height:10px;"></div>
+            <div class="content_title">{$reply_detail.title}</div>
+            <div style="height:10px;"></div>
+            {if condition="$reply_detail.qna_thumb_img neq ''"}
+            <div style="width:100%" id="content_text_1">
+                <div style="width:180px; float:left; padding-left:20px; padding-right:20px; padding-top:5px; text-align:center;"><img src="{$reply_detail.qna_thumb_img}" class="thumb_img"></div>
+                <div style="width:618px; float:left;" class="format_text">{$reply_detail.qna_content_text} <a href="javascript:void(0)" onclick="viewAll(1);">阅读全文 <span class="am-icon-angle-down am-icon-sm" style="color:#09F;"></span></a></div>
+            </div>
+            <div style="clear:both;"></div>
+            {else /}
+            <div id="content_text_1" class="format_text">{$reply_detail.qna_content_text} <a href="javascript:void(0)" onclick="viewAll(1);">阅读全文 <span class="am-icon-angle-down am-icon-sm" style="color:#09F;"></span></a></div>
+            {/if}
+            <div id="content_html_1" style="display:none;" class="format_text">
+                <div>{$reply_detail.qna_content}</div>
+                <div style="text-align:right"><a href="javascript:void(0)" onclick="hideAll(1);">收起 <span class="am-icon-angle-up am-icon-sm" style="color:#09F;"></span></a></div>
+            </div>
+            <div style="height:20px;"></div>
+            <div>
+            <div class="grey_text split_left"><span class="am-icon-comments am-icon-sm" style="color:#09F;"></span> 35个评论 <span class="am-icon-star am-icon-sm" style="color:#09F;"></span> 60个收藏 <span class="am-icon-heart am-icon-sm" style="color:#09F;"></span> 87个赞</div>
+            <div class="split_right">
+            	{if condition="$reply_detail.formatCoins > 0"}
+                	{if condition="$header_type == 'user'"}
+                	{if condition="$userid != $reply_detail.qna_userid"}
+                    	{if condition="$reply_detail['pendingid']"}
+                        {switch name="reply_detail['pending_status']"}
+                        {case value = '0'"}
+                        <button type="button" class="btn btn-default button_grey"><i class="am-icon-hourglass-half am-icon-sm"></i> 已申请回答</button>
+                        {/case}
+                        {case value = '1'"}
+                        <a href="javascript:void(0);" data-reveal-id="answer_box" data-title="qna_title1" data-pendingid="pendingid1" data-id="qnaid1" data-animation="fade" class="btn btn-default button_grey"><i class="am-icon-comment am-icon-sm"></i> 我要回答</a>
+                        {/case}
+                        {/switch}
+                        <input type="hidden" id="pendingid1" value="{$reply_detail['pendingid']}"> 
+                        {else /}
+                        <button type="button" class="btn btn-default button_blue" id="apply1" onclick="applyQna(1)"><i class="am-icon-hand-paper-o am-icon-sm"></i> 申请回答</button>
+                        {/if}
+                    {/if}
+                    {/if}
+                {else /}
+                	{if condition="$header_type == 'user'"}
+                	{if condition="$userid != $reply_detail.qna_userid"}
+                	<a href="javascript:void(0);" data-reveal-id="answer_box" data-title="qna_title1" data-id="qnaid1" data-animation="fade" class="btn btn-default button_grey"><i class="am-icon-comment am-icon-sm"></i> 我要回答</a>
+                    {/if}
+                    {/if}
+                {/if}
+            {if condition="$header_type == 'user'"}
+            {if condition="$userid != $reply_detail.qna_userid"}
+            {if condition="$reply_detail['follow'] == '-1'"}
+            <button type="button" class="btn btn-default button_blue" id="followBtn1" onclick="follow('{$reply_detail.qnaid}','1');this.disabled='disabled';" style="margin-left:30px;"><i class="am-icon-star-o am-icon-sm"></i> 收藏问题</button>
+            {else /}
+            <button type="button" class="btn btn-default button_white" style="margin-left:30px;"><i class="am-icon-star am-icon-sm"></i> 已收藏</button>
+            {/if}
+            {/if}
+            {/if}
+            </div>
+            <div style="clear:both;"></div>
+            <div style="text-align:center;" class="chk_all_answer" onclick="window.location.href='/index/qnadetails?id={$reply_detail.qnaid}'"><i class="am-icon-comments am-icon-sm"></i> 查看所有回答</div>
+            <div style="height:20px;"></div>
+            <!--answer section -->
+            <div class="header_title"><span class="am-icon-comments-o am-icon-sm" style="color:#06C;"></span> 回答者：
+            <img src="{if condition="$reply_detail.reply_personal_pic == ''"}/static/images/profile_pic.jpg{else /}{$reply_detail.reply_personal_pic}{/if}" class="user_pic_small" style="margin-right:20px;">  <span class="header_title" style="cursor:pointer;" onclick="window.location.href='/index/userreplydetail?userid={$reply_detail.userid}';">{$reply_detail.reply_username}</span> {if condition="$reply_userinfo.gender != ''"}{if condition="$reply_userinfo.gender == '1'"}<span class="am-icon-mars am-icon-sm" style="color:#06C;" title="男"></span> {else /}<span class="am-icon-venus am-icon-sm" style="color:#900;" title="女"></span> {/if}{/if}<span style="font-size:12px; color:#999; padding-left:10px;">({$reply_detail.create_date})</span>
+            {if condition="$header_type == 'user'"} 
+            {if condition="$userid != $reply_detail.userid"}
+            {if condition="$reply_detail['reply_user_att'] == '-1'"}
+            <button type="button" class="btn btn-default button_grey" id="attBtn1" onclick="attUser('{$reply_detail.userid}','1');this.disabled='disabled';" style="margin-left:20px;"><i class="am-icon-plus am-icon-sm"></i> 关注TA</button>
+            {else /}
+            <button type="button" class="btn btn-default button_white" style="width:auto; margin-left:20px;"><i class="am-icon-user-plus am-icon-sm"></i> 已关注</button>
+            {/if}
+            {/if}
+            {/if}
+            </div>
+            {if condition="$reply_userinfo.brief != ''"}<div style="padding-top:10px; padding-bottom:10px;">自我简介：{$reply_userinfo.brief}</div>{/if}
+            {if condition="$reply_tag_list"} <div style="line-height:50px;" class="tagwrap"><i class="am-icon-tags am-icon-sm" style="color:#06C;"></i>  TA的标签： {volist name="reply_tag_list" id="usertag"}{if condition="$i==6"} <span class="tag_more" onclick="showAllTags('reply');" id="reply_tag_more">更多...</span> <span class="tag" id="reply_tag{$i}" style="display:none;">{$usertag.tag}</span>{else /}{if condition="$i>5"} <span class="tag" id="reply_tag{$i}" style="display:none;">{$usertag.tag}</span>{else /} <span class="tag">{$usertag.tag}</span>{/if}{/if}{/volist} <span class="tag_more" onclick="hideAllTags('reply');" id="reply_tag_less" style="display:none;">收起</span></div>{/if}
+            <div style="height:20px;"></div>
+
+            {if condition="!$reply_detail.share"}
+            {if condition="$reply_detail.thumb_img"}
+            <div style="width:100%">
+                <div style="width:180px; float:left; padding-left:20px; padding-right:20px; padding-top:5px; text-align:center;"><img src="{$reply_detail.thumb_img}" class="thumb_img"></div>
+                <div style="width:618px; float:left;" class="format_text">{$reply_detail.content_text}</div>
+            </div>
+            <div style="clear:both;"></div>
+            {else /}
+            <div class="format_text">{$reply_detail.content_text} </div>
+            {/if}
+            {/if}
+
+            {if condition="$reply_detail.share"}
+            <div class="format_text">
+                <div>{$reply_detail.content}</div>
+            </div>
+            {/if}
+            <!-- answer srction end -->
+            <input type="hidden" id="qna_title1" value="{$reply_detail.title}"> 
+            <input type="hidden" id="qnaid1" value="{$reply_detail.qnaid}"> 
+            <div style="clear:both;"></div>
+            </div>
+            <div style="text-align:center;" class="chk_all_answer" onclick="window.location.href='/index/qnadetails?id={$reply_detail.qnaid}'"><i class="am-icon-comments am-icon-sm"></i> 查看所有回答</div>
+            </div>
+            <div class="right_column">
+            <div class="right_banner_box"><img src="/static/images/banner-1.jpg" style="width:100%;" class="banner_img"></div>
+            <div class="right_box header_title">
+            <p class="header_title">最新提问</p>
+            </div>
+            <div class="right_banner_box"><img src="/static/images/banner-2.jpg" style="width:100%;" class="banner_img"></div>
+            <div class="right_box header_title">
+            <p style="color:#666; font-size:12px;">下载比邻Call &middot; 下载比邻钱包<br /><br />联系我们 &copy;2018</p>
+            </div>
+            </div>
+            <div style="clear:both;"></div>
+            <div style="height:20px;"></div>
+        </div>
+    </div>
+</div>
+<div id="answer_box" class="reveal-modal" style="width:700px;">
+    <div class="header_title" id="qna_title"></div>
+    <div style="height:20px;"></div>
+    <div id="editordiv" class="text">
+    </div>
+    <div style="height:20px;"></div>
+    <button type="button" name="submitbtn" id="submitbtn" class="btn btn-default user_button_blue_answer"><i class="am-icon-comment am-icon-sm"></i> 发布回答</button>
+    <a class="close-reveal-modal">&#215;</a>
+</div>
+<input type="hidden" name="content" id="content" value="" />
+<input type="hidden" name="qnaid" id="qnaid" value="" />
+<input type="hidden" name="pendingid" id="pendingid" value="" />
+<input type="hidden" name="content_text" id="content_text" value="" />
+<script src="/static/js/index.js"></script>
+<script type="text/javascript" src="/static/js/jquery.reveal.index.js"></script>

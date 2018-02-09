@@ -1,0 +1,168 @@
+{include file="header/index" header_type="$header_type" /}
+<link rel="stylesheet" href="/static/css/reveal.css">
+<script src="/static/js/wangEditor.min.js"></script>
+<div style="background-color:#F2F2F2;">
+    <div style="margin:0 auto; width:1200px;">
+        <div style="text-align:left;">
+            <div style="height:10px";></div>
+            <div class="content_box" id="loading" style="height:2000px; width:1200px; text-align:center">
+                <div style="height:200px;"><img src="/static/images/loading.gif"></div>
+            </div>
+            <div style="clear:both;"></div>
+            
+            <!-- 标签区域 -->
+            <div class="big_column" id="tags">
+            <div style="height:30px;"></div>
+            <span class="header_title"><span class="am-icon-tags am-icon-sm" style="color:#06C;"></span> 请搜索您感兴趣的标签关键字：</span><input name="search_tags" id="search_tags" type="text" name="brief" id="brief" style="border:1px; border-color:#999; border-style:solid; border-radius:2px;background-color:#f7f8fa; height:45px; width:350px; padding-left:10px;" onkeydown="return chkSearchTag(event);" /> <img src="/static/images/glass_small.png" style="cursor:pointer;" onclick="searchTags();">
+            <div style="height:10px;"></div>
+            <div style="width:100%; padding-left:50px; padding-right:50px;">说明：目前我们的标签主要涵盖了文化、自然科学等领域，并且将不断扩充标签库；<br />选择您最感兴趣的标签作为个人标识，将有助于他人了解您。标签将是比邻小镇居民之间联系的重要纽带。</div>
+            <div style="height:20px;"></div>
+            <hr style="color:#CCC; height:1px; width:1150px;">
+            <div id="tags_recommand" style="padding-left:100px; padding-right:100px; line-height:50px;">为您随机推荐热门标签：<span id="recommandTags"></span><p style="font-size:18px; color:#06C;">我们还有多达数万的各类标签等待您的发掘！(<span style="font-size:12px;"><a href='javascript:void(0);' onclick='getRandomTags();'><i class="am-icon-refresh am-icon-sm"></i> 换一批推荐标签</a></span>)</p></div>
+            <div id="tag_searched" class="txtwrap" style="padding-left:40px; padding-right:40px; line-height:50px; display:none;"><img src="/static/images/loading.gif"></div>
+            <div style="height:20px;"></div>
+            </div>
+            <!-- 标签区域结束 -->
+            
+            <div style="height:10px";></div>
+            <div class="content_box" id="content">
+            {volist name="reply_list" id="reply" empty="<div style='width:100%;text-align:center; padding:200px; font-size:18px; font-weight:bold;'>暂时没有问答数据</div>"}
+            <div class="header_title split_left"><span class="am-icon-comment am-icon-sm" style="color:#900;"></span> 提问者：
+            <img src="{if condition="$reply.qna_personal_pic == ''"}/static/images/profile_pic.jpg{else /}{$reply.qna_personal_pic}{/if}" class="user_pic" style="margin-right:20px;"> <span class="header_title" style="cursor:pointer;" onclick="window.location.href='/index/userreplydetail?userid={$reply.qna_userid}';">{$reply.qna_username}</span>
+            {if condition="$header_type == 'user'"} 
+            {if condition="$userid != $reply.qna_userid"}
+            {if condition="$reply['qna_user_att'] == '-1'"}
+            <button type="button" class="btn btn-default button_grey" id="attBtn{$i}" onclick="attUser('{$reply.qna_userid}','{$i}');this.disabled='disabled';" style="margin-left:20px;"><i class="am-icon-plus am-icon-sm"></i> 关注TA</button>
+            {else /}
+            <button type="button" class="btn btn-default button_white" style="margin-left:20px;"><i class="am-icon-user-plus am-icon-sm"></i> 已关注</button>
+            {/if}
+            {/if}
+            {/if}
+            </div>
+            <div class="split_right" style="padding-top:18px; color:#03C; font-weight:bold;">{if condition="$reply.formatCoins > 0"}<span class="am-icon-bitcoin am-icon-sm" style="color:#FC0;" title="悬赏"></span> {$reply.formatCoins}{else /}<span class="am-icon-send am-icon-sm" style="color:#06C;" title="公开"></span>{/if}</div>
+            <div style="clear:both;"></div>
+            <div style="height:10px;"></div>
+            <div class="content_title" style="cursor:pointer;" onclick="window.location.href='/index/qnareply?id={$reply.replyid}'">{$reply.title}</div>
+            <div style="height:10px;"></div>
+            {if condition="$reply.thumb_img neq ''"}
+            <div style="width:100%" id="content_text_{$i}">
+                <div style="width:180px; float:left; padding-left:20px; padding-right:20px; padding-top:5px; text-align:center;" id="thumb_img"><img src="{$reply.thumb_img}" class="thumb_img"></div>
+                <div style="width:618px; float:left;" class="format_text">{$reply.content_text} <a href="javascript:void(0)" onclick="viewAll({$i});">阅读全文 <span class="am-icon-angle-down am-icon-sm" style="color:#09F;"></span></a></div>
+            </div>
+            <div style="clear:both;"></div>
+            {else /}
+            <div id="content_text_{$i}" class="format_text">{$reply.content_text} <a href="javascript:void(0)" onclick="viewAll({$i});">阅读全文 <span class="am-icon-angle-down am-icon-sm" style="color:#09F;"></span></a></div>
+            {/if}
+            <div id="content_html_{$i}" style="display:none;" class="format_text">
+                <div>{$reply.content}</div>
+                <div style="text-align:right;"><span class="am-icon-comments-o am-icon-sm" style="color:#06C;"></span> 回答者：
+                <img src="{if condition="$reply.reply_personal_pic == ''"}/static/images/profile_pic.jpg{else /}{$reply.reply_personal_pic}{/if}" class="user_pic_small" style="margin-right:20px;"> <span class="header_title" style="cursor:pointer;" onclick="window.location.href='/index/userreplydetail?userid={$reply.userid}';">{$reply.reply_username}</span> <span style="font-size:12px; color:#999; padding-left:10px;">({$reply.create_date})</span>
+                {if condition="$header_type == 'user'"} 
+                {if condition="$userid != $reply.userid"}
+                {if condition="$reply['reply_user_att'] == '-1'"}
+                <button type="button" class="btn btn-default button_grey" id="attReplyBtn{$i}" onclick="attReplyUser('{$reply.userid}','{$i}');this.disabled='disabled';" style="margin-left:20px;"><i class="am-icon-plus am-icon-sm"></i> 关注TA</button>
+                {else /}
+                <button type="button" class="btn btn-default button_white" style="width:auto; margin-left:20px;"><i class="am-icon-user-plus am-icon-sm"></i> 已关注</button>
+                {/if}
+                {/if}
+                {/if}
+                </div>
+                <div style="height:20px;"></div>
+                <div style="text-align:right"><a href="javascript:void(0)" onclick="hideAll({$i});">收起 <span class="am-icon-angle-up am-icon-sm" style="color:#09F;"></span></a></div>
+            </div>
+            <div style="height:20px;"></div>
+            <div>
+            <div class="grey_text split_left"><span class="am-icon-comments am-icon-sm" style="color:#09F;"></span> 35个评论 <span class="am-icon-star am-icon-sm" style="color:#09F;"></span> 60个收藏 <span class="am-icon-heart am-icon-sm" style="color:#09F;"></span> 87个赞</div>
+            <div class="split_right">
+            	{if condition="$reply.formatCoins > 0"}
+                	{if condition="$header_type == 'user'"}
+                	{if condition="$userid != $reply.qna_userid"}
+                    	{if condition="$reply['pendingid'] != ''"}
+                        {switch name="reply['pending_status']"}
+                        {case value = '0'"}
+                        <button type="button" class="btn btn-default button_grey"><i class="am-icon-hourglass-half am-icon-sm"></i> 已申请回答</button>
+                        {/case}
+                        {case value = '1'"}
+                        <a href="javascript:void(0);" data-reveal-id="answer_box" data-title="qna_title{$i}" data-pendingid="pendingid{$i}" data-id="qnaid{$i}" data-animation="fade" class="btn btn-default button_grey"><i class="am-icon-comment am-icon-sm"></i> 我要回答</a>
+                        {/case}
+                        {/switch}
+                        <input type="hidden" id="pendingid{$i}" value="{$reply['pendingid']}"> 
+                        {else /}
+                        <button type="button" class="btn btn-default button_blue" id="apply{$i}" onclick="applyQna({$i})"><i class="am-icon-hand-paper-o am-icon-sm"></i> 申请回答</button>
+                        {/if}
+                    {/if}
+                    {/if}
+                {else /}
+                	{if condition="$header_type == 'user'"}
+                	{if condition="$userid != $reply.qna_userid"}
+                	<a href="javascript:void(0);" data-reveal-id="answer_box" data-title="qna_title{$i}" data-id="qnaid{$i}" data-animation="fade" class="btn btn-default button_grey"><i class="am-icon-comment am-icon-sm"></i> 我要回答</a>
+                    {/if}
+                    {/if}
+                {/if}
+            {if condition="$header_type == 'user'"}
+            {if condition="$userid != $reply.qna_userid"}
+            {if condition="$reply['follow'] == '-1'"}
+            <button type="button" class="btn btn-default button_blue" id="followBtn{$i}" onclick="follow('{$reply.qnaid}','{$i}');this.disabled='disabled';" style="margin-left:30px;"><i class="am-icon-star-o am-icon-sm"></i> 收藏问题</button>
+            {else /}
+            <button type="button" class="btn btn-default button_white" style="margin-left:30px; margin-left:30px;"><i class="am-icon-star am-icon-sm"></i> 已收藏</button>
+            {/if}
+            {/if}
+            {/if}
+            </div>
+            <input type="hidden" id="qna_title{$i}" value="{$reply.title}"> 
+            <input type="hidden" id="qnaid{$i}" value="{$reply.qnaid}"> 
+            <div style="clear:both;"></div>
+            </div>
+            <hr style="height:1px; color:#CCC;">
+            {/volist}
+            <div style="text-align:center;">{$reply_list->render()}</div>
+            </div>
+            <div class="right_column">
+            <div class="right_banner_box"><img src="/static/images/banner-1.jpg" style="width:100%;" class="banner_img"></div>
+            <div class="right_box header_title">
+            <p class="header_title">最新提问</p>
+            {volist name="qna_list" id="qnaid"}
+            	<div><a href="/index/qnadetails?id={$qnaid.qnaid}">{$qnaid.shortTitle}</a></div>
+            {/volist}
+            </div>
+            <div class="right_banner_box"><img src="/static/images/banner-2.jpg" style="width:100%;" class="banner_img"></div>
+            <div class="right_box header_title">
+            <p style="color:#666; font-size:12px;">下载比邻Call &middot; 下载比邻钱包<br /><br />联系我们 &copy;2018</p>
+            </div>
+            </div>
+            <div style="clear:both;"></div>
+            <div style="height:20px;"></div>
+        </div>
+    </div>
+</div>
+<div id="answer_box" class="reveal-modal" style="width:700px;">
+    <div class="header_title" id="qna_title"></div>
+    <div style="height:20px;"></div>
+    <div id="editordiv" class="text">
+    </div>
+    <div style="height:20px;"></div>
+    <button type="button" name="submitbtn" id="submitbtn" class="btn btn-default user_button_blue_answer"><i class="am-icon-comment am-icon-sm"></i> 发布回答</button>
+    <a class="close-reveal-modal">&#215;</a>
+</div>
+<div id="tag_box" class="reveal-modal" style="width:720px;overflow-y:scroll; overflow-x:hidden; height:620px;">
+    <div id="box_title" class="header_title">子标签列表</div>
+    <div style="height:20px;"></div>
+    <div style="line-height:50px;">当前标签：<span id="current_tag"></span></div>
+    <div id="tips" style="color:#03C;">tips: 也可以直接点击选取该父标签查看选择该标签的用户</div>
+    <div id="notLogin" style="color:#900; display:none;">对不起，您尚未登录，请 <a href="/index/login" style="font-weight:bold;">登录</a> 后添加标签。</div>
+    <hr style="color:#999; height:1px; width:90%;">
+    <div id="data_list" style="line-height:50px;"></div>
+    <div style="height:15px;"></div>
+    <a class="close-reveal-modal">&#215;</a>
+</div>
+<input type="hidden" name="content" id="content" value="" />
+<input type="hidden" name="qnaid" id="qnaid" value="" />
+<input type="hidden" name="pendingid" id="pendingid" value="" />
+<input type="hidden" name="content_text" id="content_text" value="" />
+<input type="hidden" id="userid" value="{$userid}">
+<input type="hidden" id="page" value="">
+<input type="hidden" id="last_search_tag" value="">
+<input type="hidden" id="recommandTags_text" value="">
+<script src="/static/js/index.js"></script>
+<script src="/static/js/index_tags.js"></script>
+<script type="text/javascript" src="/static/js/jquery.reveal.indextag.js"></script>

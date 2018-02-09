@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta HTTP-EQUIV="pragma" CONTENT="no-cache">
+<meta HTTP-EQUIV="Cache-Control" CONTENT="no-store, must-revalidate">
+<meta HTTP-EQUIV="expires" CONTENT="Wed, 26 Feb 1997 08:21:57 GMT">
+<meta HTTP-EQUIV="expires" CONTENT="0">
+<meta name = "format-detection" content = "telephone=no">
+<title>比邻小镇</title>
+<script src='http://libs.baidu.com/jquery/1.6.2/jquery.min.js'></script>
+<script type="text/javascript" src="/static/js/header.js"></script>
+<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link rel="stylesheet" href="/static/css/common.css" />
+<link rel="stylesheet" href="/static/css/amazeui.min.css" />
+<link rel="stylesheet" href="/static/css/jquery.xctips.css">
+<script type="text/javascript" src="/static/js/jquery.xctips.js"></script>
+<style> 
+body{
+	margin: 0 auto;
+	text-align: center;
+	margin-left: 0px;
+	margin-right: 0px;
+} 
+.div{ margin:0 auto; width:1200px; height:115px; text-align:left; font-size:18px;} 
+.img_btn{
+	position: absolute;
+	top: 50%;
+	right: 8px;
+	margin-top: -11px;
+}
+/* 下拉按钮样式 */
+.dropbtn {
+    cursor: pointer;
+}
+
+/* 容器 <div> - 需要定位下拉内容 */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+/* 下拉内容 (默认隐藏) */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 120px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+	left:40px;
+}
+
+/* 下拉菜单的链接 */
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+/* 鼠标移上去后修改下拉菜单链接颜色 */
+.dropdown-content a:hover {background-color: #f1f1f1}
+
+/* 在鼠标移上去后显示下拉菜单 */
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* 当下拉内容显示后修改下拉按钮的背景颜色 */
+.dropdown:hover .dropbtn {
+}
+</style> 
+</head>
+
+<body>
+<div style="width:100%; border-bottom-width:1px; border-bottom-color:#CCC; border-bottom-style:solid;">
+<div class="div">
+<form class="form-inline">
+        <img src="/static/images/logo.jpg" />
+        <div class="form-group header_title" id="index_header" style="padding-left:10px; cursor:pointer;" onclick="window.location.href='/index'">首页</div>
+        <div class="form-group header_title" id="qnalist_header" style="padding-left:10px; cursor:pointer;" onclick="window.location.href='/index/qnalist'">问答</div>
+        <div class="form-group header_title" id="feature_header" style="padding-left:10px; cursor:pointer; padding-right:20px;" onclick="window.location.href='/index/feature'">精选</div>
+        <div class="form-group" style="border:1px solid #cccccc; border-radius:4px; width:470px;height:62px; background-color:#f7f8fa;">
+            <input type="text" style="border:0;margin-left:5px;width:400px;height:55px;line-height:50px; background-color:#f7f8fa;" id="search_items" placeholder="搜索您感兴趣的问题..." onkeydown="return chkSearch(event);">
+            <img src="/static/images/glass.jpg" style="cursor:pointer;" onclick="searchQnas();" />
+        </div>
+        {switch name="header_type"}
+		{case value="normal"}
+        <img src="/static/images/ask_btn.png"  style="padding-left:10px; cursor:pointer;" onclick="window.location.href='/index/qna';" />
+    	<div class="form-group" style="padding-left:50px; padding-right:20px; cursor:pointer;" onclick="window.location.href='/index/login'">登录</div>
+        <div class="form-group"><img src="/static/images/space.jpg"></div>
+        <div class="form-group" style="padding-left:20px; cursor:pointer;" onclick="window.location.href='/index/register'">注册</div>
+        {/case}
+		{case value="register"}
+        
+        <div class="form-group" style="padding-left:50px;"><span style="padding-left:50px; padding-right:10px; color:#666;">已有账号立即</span><button type="button" id="login" class="btn btn-default" style="width:60px; height:50px; background-color:#748ba5; color:#FFF;" onclick="window.location.href='/index/login'">登录</button></div>
+        {/case}
+		{case value="login"}
+        
+        <div class="form-group" style="padding-left:50px;"><span style="padding-left:50px; padding-right:10px; color:#666;">还没有账号？</span><button type="button" id="login" class="btn btn-default" style="width:60px; height:50px; background-color:#748ba5; color:#FFF;" onclick="window.location.href='/index/register'">注册</button></div>
+        {/case}
+		{case value="user"}
+        <img src="/static/images/ask_btn.png" style="padding-left:10px; cursor:pointer;" onclick="window.location.href='/index/qna';" />
+        <div class="dropdown" style=" width:200px;; padding-right:50px;text-align:right;"><a href="/index/userpending"><img src="{if condition='$userinfo.personal_pic' != ''}{$userinfo.personal_pic}{else /}/static/images/profile_pic.jpg{/if}" class="top_user_pic"></a>{if condition="$userinfo.message_count>0"}<span class="reminder_top">{$userinfo.message_count}</span>{/if}<!--<b class="caret"></b>-->
+            <div class="dropdown-content" style="z-index:100">
+              <a href="/index/userpending">用户管理后台</a>
+              <a href="/index/userprofile">编辑个人资料</a>
+              <a href="/index/login/Logout">退出登录</a>
+            </div>
+        </div>
+		{/case}
+		{default /}
+        <img src="/static/images/ask_btn.png" style="padding-left:10px; cursor:pointer;" onclick="window.location.href='/index/qna';" />
+    	<div class="form-group" style="padding-left:50px; padding-right:20px; cursor:pointer;" onclick="window.location.href='/index/login'">登录</div>
+        <div class="form-group"><img src="/static/images/space.jpg"></div>
+        <div class="form-group" style="padding-left:20px; cursor:pointer;" onclick="window.location.href='/index/register'">注册</div>
+		{/switch}
+</form>
+</div>
+</div>

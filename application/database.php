@@ -13,15 +13,15 @@ return [
     // 数据库类型
     'type'            => 'mysql',
     // 服务器地址
-    'hostname'        => '127.0.0.1',
+    'hostname'        => '123.59.44.154',
     // 数据库名
-    'database'        => '',
+    'database'        => 'medical_source',
     // 用户名
     'username'        => 'root',
     // 密码
-    'password'        => '',
+    'password'        => 'SHpj1qaz@WSX',
     // 端口
-    'hostport'        => '',
+    'hostport'        => '4406',
     // 连接dsn
     'dsn'             => '',
     // 数据库连接参数

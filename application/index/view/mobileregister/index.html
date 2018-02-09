@@ -1,0 +1,60 @@
+{__NOLAYOUT__}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <META HTTP-EQUIV="Pragma" CONTENT="no-cache"> 
+    <META HTTP-EQUIV="Cache-Control" CONTENT="no-cache"> 
+    <META HTTP-EQUIV="Expires" CONTENT="0">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="cleartype" content="on">
+<title>比邻小镇</title>
+<link rel="stylesheet" href="/static/css/mobileregister.css">
+<script type="text/javascript" src="/static/js/jquery.js"></script>
+<script type="text/javascript" src="/static/js/mobileregister.js"></script>
+</head>
+
+<body>
+<div class="normal">
+<div id="top" align="center" style="padding-top:30px;"><img src="/static/images/biaoti.png" alt=""/></div>
+<div style="height:30px;clear:both"></div>
+
+	<div align="left" style="padding-left:40px; padding-top:8px; font-size:28px; color:#333; float:left; width:140px;">用户名</div>
+    <div align="left" style="float:left"><input name="username" id="username" type="text" placeholder="4-20个字符，可使用数字/字母/中文" onblur="chkUsername();" /></div>
+	<div style="height:20px;clear:both"></div>
+    <div align="left" style="padding-left:40px; padding-top:8px; font-size:28px; color:#333; float:left; width:140px;">手机号码</div>
+    <div align="left" style="float:left"><input  name="mobile" id="mobile" width="11" type="text" placeholder="11位中国大陆手机号码" onblur="chkMobile();" onkeyup="this.value=this.value.replace(/\D/g,'');" /></div>
+	<div style="height:20px;clear:both"></div>
+    <div align="left" style="padding-left:40px; padding-top:8px; font-size:28px; color:#333; float:left; width:140px;">密码</div>
+    <div align="left" style="float:left"><input name="password" id="password" type="password" placeholder="大于6个字符，数字、大/小写字母、符号包含两种" onblur="chkPassword();" /></div>
+	<div style="height:20px;clear:both"></div>
+    <div align="left" style="padding-left:40px; padding-top:8px; font-size:28px; color:#333; float:left; width:140px;">确认密码</div>
+    <div align="left" style="float:left"><input name="password2" id="password2" type="password" placeholder="请再输一次密码" onblur="chkPassword2();" /></div>
+	<div style="height:20px;clear:both"></div>
+    <div align="left" style="padding-left:40px; padding-top:8px; font-size:28px; color:#333; float:left; width:140px;">验证码</div>
+    <div align="left" style="float:left; width:400px;"><img id="verify_img" src="{:captcha_src()}" width="190" alt="验证码" onclick="refreshVerify()" />
+          <a href="javascript:void(0);" onclick="refreshVerify()">看不清？刷新<img src="/static/images/refresh.jpg"></a><br />
+          <input name="imgcode" id="imgcode" type="text" placeholder="请输入图形验证码" onblur="chkImgcode();" onkeyup="value=value.replace(/[^\w\.\/]/ig,'');" /></div>
+	<div style="height:20px;clear:both"></div>
+    <div align="left" style="padding-left:40px; padding-top:8px; font-size:28px; color:#333; float:left; width:140px;">短信码</div>
+    <div align="left" style="float:left"><input name="smscode" id="smscode" type="text" placeholder="请输入短信中的验证码" onblur="chkSmscode();" onkeyup="value=value.replace(/[^\w\.\/]/ig,'');" style="width:200px;" /><button type="button" id="zphone" onClick="get_mobile_code();" style="width:auto; height:55px; background-color:#748ba5; color:#FFF; margin-left:20px;">获取短信码</button></div>
+	<div style="height:10px;clear:both"></div>
+	<input type="hidden" name="register_token" id="register_token" value="{$register_token}" /></form>
+    <div style="height:40px; text-align:center;" id="error"></div>
+<div id="photo3" align="center" style="padding-top:10px;"><button type="submit" name="submitbtn" id="submitbtn" onclick="submitForm();" style="width:350px; height:65px; background-color:#004d9d; color:#FFF;">注 册</button></div>
+<div style="height:40px;clear:both"></div>
+<div id="line" align="center"><img src="/static/images/town.png" alt="" width="640" height="144"/></div>
+<div align="center" class="boxcontent boxyellow" id="result" style="display:none" >
+  <div class="box">
+    <p style=" height:20px;">&nbsp;</p>
+    <div class="Detail" style="text-align:center;">
+		<p style="text-align:center; font-size:26px; position:relative;"></span></p>
+		<p class="red" id="message" style="text-align:center; font-size:26px; position:relative;"></p>
+		<p style=" height:20px;">&nbsp;</p>
+    </div>
+  </div>
+</div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,104 @@
+{include file="header/index" header_type="$header_type" /}
+<link rel="stylesheet" href="/static/css/user_section.css">
+<link rel="stylesheet" href="/static/css/reveal.css">
+<script src="/static/js/wangEditor.min.js"></script>
+<div style="background-color:#F2F2F2;">
+    <div id="user_profile" class="user_profile">
+        <div style="margin:0 auto; width:1200px;">
+            <div style="height:10px"></div>
+            <div>
+                <div style="height:200px; overflow:hidden;" id="profile_bg"><img src="{if condition='$userinfo.personal_bg' != ''}{$userinfo.personal_bg}{else /}/static/images/profile_bg.jpg{/if}" style="width:100%;opacity: 0.5;filter:alpha(opacity=50);"></div>
+                <div style="height:10px";></div>
+                <div style="width:310px; float:left; text-align:center; height:190px;"><img src="{if condition='$userinfo.personal_pic' != ''}{$userinfo.personal_pic}{else /}/static/images/profile_pic.jpg{/if}" class="profile_pic">&nbsp;</div>
+                <div style="width:890px; float:left; text-align:left;">
+                    <div style="width:590px; float:left; text-align:left;" class="content_title"> {$username}&nbsp;</div>
+                    <div style="width:300px; float:left; text-align:right;"><button type="button" class="btn btn-primary" style="height:45px; background-color:#004d9d; color:#FFF;" onclick="window.location.href='/index/userprofile'"><i class="am-icon-edit"></i> 编辑我的资料</button> <button type="button" class="btn btn-default" style="height:45px; " onclick="window.location.href='/index/login/Logout';"><i class="am-icon-sign-out"></i> 退出登录</button></div>
+                    <div style="clear:both;"></div>
+                    <div>{if condition="$userinfo.brief != ''"}{$userinfo.brief}{else /}还没想好该怎么来介绍自己{/if}</div>
+                    <div style="height:20px";></div>
+                    <div style="line-height:50px;" class="tagwrap">{volist name="user_tag_list" id="usertag" length="6" empty="<span style='color:#03C;'>暂未选择标签</span>"}{if condition="$i==6"} <span class="tag_more" onclick="window.location.href='usertags'">更多...</span>{else /} <span class="tag">{$usertag.tag}</span>{/if}{/volist}</div>
+                </div>
+                <div style="clear:both;"></div>
+            </div>
+        </div>
+    </div>
+    <div style="height:10px"></div> 
+    <div id="management">
+        <div class="management_section">
+        	<div id="menu_items" style="background-color:#EEE;">
+            	<div class="inactive_menu" onclick="window.location.href='/index/userpending'">等我回答{if condition="$userinfo.pending_reminder>0"}<span class="reminder">{$userinfo.pending_reminder}</span>{/if}</div>
+                <div class="inactive_menu" onclick="window.location.href='/index/userqnas'">我的提问{if condition="$userinfo.reply_apply_reminder>0"}<span class="reminder">{$userinfo.reply_apply_reminder}</span>{/if}</div>
+                <div class="active_menu">我的回答{if condition="$userinfo.answer_reminder>0"}<span class="reminder">{$userinfo.answer_reminder}</span>{/if}</div>
+                <div class="inactive_menu" onclick="window.location.href='/index/userattention'">我的关注{if condition="$userinfo.attention_reminder>0"}<span class="reminder">{$userinfo.attention_reminder}</span>{/if}</div>
+                <div class="inactive_menu" onclick="window.location.href='/index/userfollow'">我的收藏</div>
+                <div class="inactive_menu" onclick="window.location.href='/index/usercoins'">我的比邻币{if condition="$userinfo.transaction_reminder>0"}<span class="reminder">{$userinfo.transaction_reminder}</span>{/if}</div>
+                <div class="inactive_menu last_menu" onclick="window.location.href='/index/usermessage'">消息中心{if condition="$userinfo.message_reminder>0"}<span class="reminder">{$userinfo.message_reminder}</span>{/if}</div>
+                <div style="clear:both;"></div>
+            </div>
+            <div style="height:20px"></div> 
+            <div class="content_box_user" id="loading" style="height:2000px; text-align:center">
+                <div style="height:200px;"><img src="/static/images/loading.gif"></div>
+            </div>
+            <div class="content_section">
+                {volist name="reply_list" id="reply" empty="<div style='width:100%;text-align:center; height:200px; padding-top:100px; font-size:18px; font-weight:bold;'>您还没有回答任何问题</div>"}
+                <div>
+                <div id="reply_status" style=" text-align:left; margin-left:30px;">
+                {in name="reply.pending_status" value="4,5,6,7,8"}
+                <div id="reply_status" style=" text-align:left; margin-left:30px;">
+                {switch name="reply.pending_status"}
+                {case value = "4"}<span class="am-icon-thumbs-o-up am-icon-sm" style="color:#060;"></span> <span style="color:#060; font-weight:bold;">这个答案已经被接受。{if condition="$reply.qna_coins > 0"}<span class="am-icon-bitcoin am-icon-sm" style="color:#FC0;" title="悬赏"></span> 获得悬赏：{$reply.formatCoins}{/if}</span>{/case}
+                {case value = "5"}<span class="am-icon-thumbs-o-down am-icon-sm" style="color:#900;"></span> <span style="color:#900; font-weight:bold;">这个答案已经被拒绝。</span>{/case}
+                {case value = "6"}<span class="am-icon-thumbs-o-down am-icon-sm" style="color:#900;"></span> <span style="color:#900; font-weight:bold;">这个答案已经被拒绝。</span><button type="button" class="btn btn-default" style="width: auto; height:40px; background-color:#C63; color:#FFF;" onclick="arbitrate('{$reply.pendingid}');this.disabled='disabled'" id="arbitrateBtn{$i}"><span class="am-icon-balance-scale am-icon-sm" style="color:#FFF;"></span> 我要申请仲裁</button>{/case}
+                {case value = "7"}<span class="am-icon-thumbs-o-down am-icon-sm" style="color:#900;"></span> <span style="color:#900; font-weight:bold;">这个答案已经被拒绝。正在仲裁处理中。</span>{/case}
+                {case value = "8"}<span class="am-icon-thumbs-o-down am-icon-sm" style="color:#900;"></span> <span style="color:#900; font-weight:bold;">这个答案已经被拒绝。仲裁处理结束。</span>{/case}
+                {/switch}
+                </div>
+                {/in}
+                {if condition="$reply.thumb_img neq ''"}
+                <div style="width:100%" id="content_text_{$i}" class="user_list_left">
+                    <div style="width:180px; float:left; padding-left:20px; padding-right:20px; padding-top:10px; text-align:center;" id="thumb_img"><img src="{$reply.thumb_img}" class="thumb_img"></div>
+                    <div style="width:950px; float:left;"><div style="text-align:left;"><a href="/index/qnareply?id={$reply.replyid}" class="content_title" target="_blank">{$reply.title}</a></div>
+                    <span style="font-size:12px; color:#666;">{$reply.create_date}</span>
+                    <div class="format_text">{$reply.content_text} <a href="javascript:void(0)" onclick="viewAll({$i});">阅读全文 <span class="am-icon-angle-down am-icon-sm" style="color:#09F;"></span></a></div></div>
+                </div>
+                {else /}
+                <div id="content_text_{$i}" class="text_list"><div style="text-align:left;"><a href="/index/qnareply?id={$reply.replyid}" class="content_title" target="_blank">{$reply.title}</a></div>
+                <span style="font-size:12px; color:#666;">{$reply.create_date}</span>
+				<div class="format_text">{$reply.content_text} <a href="javascript:void(0)" onclick="viewAll({$i});">阅读全文<span class="am-icon-angle-down am-icon-sm" style="color:#09F;"></span></a></div></div>
+                {/if}
+                <div id="content_html_{$i}" style="display:none;" class="content_html">
+                    <div><a href="/index/qnareply?id={$reply.replyid}" class="content_title" target="_blank">{$reply.title}</a></div>
+                	<span style="font-size:12px; color:#666;">{$reply.create_date}</span>
+                    <div style="height:20px"></div> 
+                    <div class="format_text">{$reply.content}</div>
+                    <div style="text-align:right"><a href="javascript:void(0)" onclick="hideAll({$i});">收起 <span class="am-icon-angle-up am-icon-sm" style="color:#09F;"></span></a></div>
+                </div>
+                <div style="clear:both;"></div>
+                <hr style="height:1px; color:#CCC;">
+                </div>
+                {/volist}
+            </div>
+            </div>
+    		<div style="height:20px;"></div>
+        </div>
+    </div>
+</div>
+<div id="answer_box" class="reveal-modal" style="width:700px;">
+    <div class="header_title" id="qna_title"></div>
+    <div style="height:20px;"></div>
+    <div id="editordiv" class="text">
+    </div><button type="button" name="submitbtn" id="submitbtn" class="btn btn-default user_button_blue_answer">发布回答</button>
+    <a class="close-reveal-modal">&#215;</a>
+</div>
+<div id="addition_box" class="reveal-modal" style="width:700px;">
+    <div class="header_title">请输入您要求回答者补充回答的原因</div>
+    <div style="height:20px;"></div>
+    <div id="editordiv" class="text">
+    </div><button type="button" name="additionbtn" id="additionbtn" class="btn btn-default user_button_blue_answer"><i class="am-icon-comment am-icon-sm"></i> 发布补充提问</button>
+    <a class="close-reveal-modal">&#215;</a>
+</div>
+<input type="hidden" name="content" id="content" value="" />
+<input type="hidden" name="qnaid" id="qnaid" value="" />
+<input type="hidden" name="content_text" id="content_text" value="" />
+<script src="/static/js/user_section.js"></script>
+<script type="text/javascript" src="/static/js/jquery.reveal.qna.js"></script>

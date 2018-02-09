@@ -1,0 +1,127 @@
+{include file="header/index" header_type="$header_type" /}
+<style> 
+td { padding-right:10px; padding-bottom:20px;}
+input { background-color:#f7f8fa;}
+.text { height: 340px; width: 600px; }
+.title { font-size:18px; font-weight:bold;}
+.invitedUsers {color:#03F;white-space:normal;word-break:break-all;}
+</style>
+<link rel="stylesheet" href="/static/css/reveal.css">
+<script src="/static/js/wangEditor.min.js"></script>
+<script type="text/javascript" src="/static/js/math.js"></script>
+
+
+<div style="height:60px;"></div>
+	<div class="form-group">
+    <table width="630" align="center">
+      <tr>
+        <td colspan="5" align="center" class="title">我要提问</td>
+      </tr>
+      <tr>
+        <td colspan="4" align="left"><input type="text" class="form-control" name="title" id="title" style="background-color:#f7f8fa; height:45px;" placeholder="问题标题，10-60个中文字符（20-120个英文字符）" /></td>
+        <td width="40" align="right"><img src="/static/images/blank.png" width="30" height="29" id="check_title" /></td>
+      </tr>
+      <tr>
+        <td colspan="5" align="left">问题描述（可选）</td>
+      </tr>
+      <tr>
+        <td colspan="4" align="left">
+        <div id="editordiv" class="text">
+        </div>
+        </td>
+        <td width="40">&nbsp;</td>
+      </tr>
+      <tr>
+        <td width="160" align="left">悬赏比邻币（可选）：</td>
+        <td align="left"><input type="text" class="form-control" name="coins" id="coins" width="4" style="background-color:#f7f8fa; height:45px; width:160px;" placeholder="请输入比邻币数量" onblur="clearNoNum(this);chkCoins();" onkeyup="clearNoNum(this);chkCoins();" onafterpaste="clearNoNum(this);chkCoins();" /></td>
+        <td align="left"></td>
+        <td align="right">所需比邻币(包括10%佣金)：<span id="total_coins" style="color:#03F; font-weight:bold;">0</span></td>
+        <td align="right"><img src="/static/images/blank.png" alt="" width="30" height="29" id="check_coins" /></td>
+      </tr>
+      <tr>
+        <td colspan="4" align="left">现有比邻币：<span style="color:#03F; font-weight:bold;">{$coins;}</span>，冻结比邻币：<span style="color:#900; font-weight:bold;">{$frozen_coins;}</span>，可用余额：<span id="available_coins" style="color:#063; font-weight:bold;"></span></td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr id="inviteRow" style="display:none;">
+        <td colspan="5"><a href="javascript:void(0);" data-reveal-id="inviteUsers" data-animation="fade" style="padding-right:30px;">快速邀请用户回答</a> | <a href="javascript:void(0);" data-reveal-id="searchUsers" data-animation="fade" style="padding-left:30px; padding-right:30px;">搜索用户邀请回答</a> | <a href="javascript:void(0);" data-reveal-id="attUsers" data-animation="fade" style="padding-left:30px;">邀请关注用户回答</a></td>
+      </tr>
+      <tr id="inviteResultRow" style="display:none;">
+        <td colspan="5" style="text-align:left;">
+        <p>已邀请用户：（您最多可以邀请10位用户来回答您的问题）</p>
+        <p><div id="invitedUsers" class="invitedUsers">还未邀请任何用户</div></p>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="4" align="right"><button type="button" name="submitbtn" id="submitbtn" class="btn btn-default" style="width: 100%; height:45px; background-color:#004d9d; color:#FFF;">发布问题</button></td>
+        <td align="right">&nbsp;</td>
+      </tr>
+    </table>
+</div>
+<div id="inviteUsers" class="reveal-modal" style="height:620px;overflow:hidden;">
+    <div class="header_title">快速邀请以下用户来回答</div>
+    <div style="height:20px;"></div>
+    <!-- 随机用户列表 -->
+    {volist name="rand_users" id="randUser" empty="暂时没有用户数据"}
+    <div style="width:80%; text-align:left; padding-bottom:20px; float:left;" id="rndUser{$i}"><img src="{if condition="$randUser.personal_pic == ''"}/static/images/profile_pic.jpg{else /}{$randUser.personal_pic}{/if}" class="user_pic" style="margin-right:20px;"> {$randUser.username}</div><div style="float:left; text-align:right;"><button type="button" id="invitebtn{$i}" class="btn btn-default" style="width: 100%; height:45px; background-color:#004d9d; color:#FFF;" onclick="inviteUser('{$randUser.username}',{$i},'invite');">邀请回答</button><button type="button" id="cancelbtn{$i}" class="btn btn-default" style="width: 100%; height:45px; background-color:#333; color:#FFF; display:none;" onclick="cancelUser('{$randUser.username}');">取消邀请</button><input type="hidden" name="username{$i}" id="username{$i}" value="{$randUser.username}" /></div>
+    <div style="clear:both;"></div>
+    {/volist}
+    <div><a href="javascript:void(0);" onclick="getRandUsers();"><i class="am-icon-refresh am-icon-spin"></i> 换一批用户</a></div>
+    <!-- 随机用户列表结束 -->
+    <a class="close-reveal-modal">&#215;</a>
+</div>
+<div id="searchUsers" class="reveal-modal" style="overflow:hidden; height:620px;">
+    <div class="header_title">搜索用户邀请回答</div>
+    <div style="height:20px;"></div>
+    <div style="text-align:right;">搜索您想邀请的用户：
+    	<div style="height:10px;"></div>
+        <div class="form-group" style="border:1px solid #cccccc; border-radius:4px; width:100%;height:50px; background-color:#f7f8fa; text-align:left;">
+            <input type="text" style="border:0;margin-left:5px;width:88%;height:38px;line-height:38px; background-color:#f7f8fa;" id="search_user" placeholder="搜索用户名...">
+            <img src="/static/images/glass_small.jpg" style="cursor:pointer;" onclick="searchUser();" />
+        </div>
+    </div>
+    <div id="searchResult1" style="display:none;">
+        <div style="width:80%; text-align:left; padding-bottom:20px; float:left;" id="searchUser1"></div><div style="float:left; text-align:right;"><button type="button" id="search_invitebtn1" class="btn btn-default" style="width: 100%; height:45px; background-color:#004d9d; color:#FFF;">邀请回答</button><button type="button" id="search_cancelbtn1" class="btn btn-default" style="width: 100%; height:45px; background-color:#333; color:#FFF; display:none;">取消邀请</button><input type="hidden" name="searchusername1" id="searchusername1" value="" /></div>
+        <div style="clear:both;"></div>
+    </div>
+    <div id="searchResult2" style="display:none;">
+        <div style="width:80%; text-align:left; padding-bottom:20px; float:left;" id="searchUser2"></div><div style="float:left; text-align:right;"><button type="button" id="search_invitebtn2" class="btn btn-default" style="width: 100%; height:45px; background-color:#004d9d; color:#FFF;">邀请回答</button><button type="button" id="search_cancelbtn2" class="btn btn-default" style="width: 100%; height:45px; background-color:#333; color:#FFF; display:none;">取消邀请</button><input type="hidden" name="searchusername2" id="searchusername2" value="" /></div>
+        <div style="clear:both;"></div>
+    </div>
+    <div id="searchResult3" style="display:none;">
+        <div style="width:80%; text-align:left; padding-bottom:20px; float:left;" id="searchUser3"></div><div style="float:left; text-align:right;"><button type="button" id="search_invitebtn3" class="btn btn-default" style="width: 100%; height:45px; background-color:#004d9d; color:#FFF;">邀请回答</button><button type="button" id="search_cancelbtn3" class="btn btn-default" style="width: 100%; height:45px; background-color:#333; color:#FFF; display:none;">取消邀请</button><input type="hidden" name="searchusername3" id="searchusername3" value="" /></div>
+        <div style="clear:both;"></div>
+    </div>
+    <div id="searchResult4" style="display:none;">
+        <div style="width:80%; text-align:left; padding-bottom:20px; float:left;" id="searchUser4"></div><div style="float:left; text-align:right;"><button type="button" id="search_invitebtn4" class="btn btn-default" style="width: 100%; height:45px; background-color:#004d9d; color:#FFF;">邀请回答</button><button type="button" id="search_cancelbtn4" class="btn btn-default" style="width: 100%; height:45px; background-color:#333; color:#FFF; display:none;">取消邀请</button><input type="hidden" name="searchusername4" id="searchusername4" value="" /></div>
+        <div style="clear:both;"></div>
+    </div>
+    <div id="searchResult5" style="display:none;">
+        <div style="width:80%; text-align:left; padding-bottom:20px; float:left;" id="searchUser5"></div><div style="float:left; text-align:right;"><button type="button" id="search_invitebtn5" class="btn btn-default" style="width: 100%; height:45px; background-color:#004d9d; color:#FFF;">邀请回答</button><button type="button" id="search_cancelbtn5" class="btn btn-default" style="width: 100%; height:45px; background-color:#333; color:#FFF; display:none;">取消邀请</button><input type="hidden" name="searchusername5" id="searchusername5" value="" /></div>
+        <div style="clear:both;"></div>
+    </div>
+    <div id="searchResult6" style="display:none;">
+        <div style="width:80%; text-align:left; padding-bottom:20px; float:left;" id="searchUser6"></div><div style="float:left; text-align:right;"><button type="button" id="search_invitebtn6" class="btn btn-default" style="width: 100%; height:45px; background-color:#004d9d; color:#FFF;">邀请回答</button><button type="button" id="search_cancelbtn6" class="btn btn-default" style="width: 100%; height:45px; background-color:#333; color:#FFF; display:none;">取消邀请</button><input type="hidden" name="searchusername6" id="searchusername6" value="" /></div>
+        <div style="clear:both;"></div>
+    </div>
+    <a class="close-reveal-modal">&#215;</a>
+</div>
+<div id="attUsers" class="reveal-modal" style="overflow-y:scroll; height:620px;">
+    <div class="header_title">邀请关注用户来回答</div>
+    <div style="height:20px;"></div>
+    {volist name="att_users" id="attUser" empty="暂时没有关注用户"}
+    <div style="width:80%; text-align:left; padding-bottom:20px; float:left;" id="attUser{$i}"><img src="{if condition="$attUser.attention_personal_pic == ''"}/static/images/profile_pic.jpg{else /}{$attUser.attention_personal_pic}{/if}" class="user_pic" style="padding-right:20px;"> {$attUser.attention_username}</div><div style="float:left; text-align:right;"><button type="button" id="att_invitebtn{$i}" class="btn btn-default" style="width: 100%; height:45px; background-color:#004d9d; color:#FFF;" onclick="inviteUser('{$attUser.attention_username}',{$i},'att');">邀请回答</button><button type="button" id="att_cancelbtn{$i}" class="btn btn-default" style="width: 100%; height:45px; background-color:#333; color:#FFF; display:none;" onclick="cancelUser('{$attUser.attention_username}');">取消邀请</button><input type="hidden" name="att_username{$i}" id="att_username{$i}" value="{$attUser.attention_username}" /></div>
+    <div style="clear:both;"></div>
+    {/volist}
+    <a class="close-reveal-modal">&#215;</a>
+</div>
+
+<input type="hidden" name="content" id="content" value="" />
+<input type="hidden" name="content_text" id="content_text" value="" />
+<input type="hidden" name="invite_user_list" id="invite_user_list" value="" />
+<input type="hidden" name="total_att_users" id="total_att_users" value="{$i}" />
+<input type="hidden" name="userid" id="userid" value="{$userid}" />
+<input type="hidden" name="originalcoins" id="originalcoins" value="{$coins}" />
+<input type="hidden" name="frozencoins" id="frozencoins" value="{$frozen_coins}" />
+<div style="height:100px;"></div>
+<script type="text/javascript" src="/static/js/qna.js"></script>
+<script type="text/javascript" src="/static/js/jquery.reveal.js"></script>

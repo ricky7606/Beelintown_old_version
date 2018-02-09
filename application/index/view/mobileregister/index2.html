@@ -1,0 +1,57 @@
+{__NOLAYOUT__}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <META HTTP-EQUIV="Pragma" CONTENT="no-cache"> 
+    <META HTTP-EQUIV="Cache-Control" CONTENT="no-cache"> 
+    <META HTTP-EQUIV="Expires" CONTENT="0">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="cleartype" content="on">
+<title>比邻小镇</title>
+<link rel="stylesheet" href="/static/css/mobileregister.css">
+<script>
+	var u = navigator.userAgent;
+	var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+	var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+    if(/Android (\d+\.\d+)/.test(navigator.userAgent)){
+        var version = parseFloat(RegExp.$1);
+        if(version>2.3){
+            var phoneScale = parseInt(window.screen.width)/640;
+            document.write('<meta name="viewport" content="width=640, minimum-scale = '+ phoneScale +', maximum-scale = '+ phoneScale +', target-densitydpi=device-dpi">');
+        }else{
+            document.write('<meta name="viewport" content="width=640, target-densitydpi=device-dpi">');
+        }
+    }else{
+        document.write('<meta name="viewport" content="width=640, user-scalable=no, target-densitydpi=device-dpi">');
+    }
+    //微信去掉下方刷新栏
+			document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+				WeixinJSBridge.call('hideOptionMenu');
+			});
+			document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+				WeixinJSBridge.call('hideToolbar');
+			});
+			function closeWX(){
+				window.close();
+				WeixinJSBridge.call('closeWindow');
+			}
+</script>
+</head>
+
+<body>
+<div class="normal">
+<div id="top" align="center" style="padding-top:30px;"><img src="/static/images/biaoti.png" alt=""/></div>
+<div style="height:30px;clear:both; text-align:center; color:#03C; padding-top:50px;">欢迎您成为比邻小镇新居民！
+<div style="height:30px;"></div>
+<div><button type="submit" onclick="closeWX();" style="width:150px; height:55px; background-color:#004d9d; color:#FFF;">关 闭</button></div>
+</div>
+<div style="height:80px;"></div>
+<div class="text-box">{$str}</div>
+<div class="text-box">下载“比邻钱包”</div>
+<div class="text-box">下载“比邻Call”</div>
+<div id="line" align="center"><img src="/static/images/town.png" alt="" width="640" height="144"/></div>
+
+</div>
+</body>
+</html>

@@ -15,9 +15,8 @@ use Qiniu\Auth as Auth;
 use Qiniu\Storage\BucketManager;
 use Qiniu\Storage\UploadManager;
 use app\index\model\Users;
-use app\index\model\Tags;
 
-class Index extends Controller
+class Feature extends Controller
 {
     public function index()
     {
@@ -29,21 +28,10 @@ class Index extends Controller
 			$reply_list = $reply->getUpdateReplyDetails(false); 
 		}
 //		dump($reply->getLastSql());
-		if(Cookie::has('userid')){
-			$user = new Users;
-			$userid = Cookie::get('userid');
-			$user->chkReminder($userid);
-			$userinfo = $user->getUserInfo($userid);
-			$this->assign('userid',$userid);
-			$this->assign('userinfo',$userinfo);
-			$this->assign('header_type','user');
-		}else{
-			$this->assign('userid','');
-			$this->assign('header_type','normal');
-		}
 		if($reply_list){
 			foreach ($reply_list as $n=>$reply){ 
 				if(Cookie::has('userid')){
+					$userid = Cookie::get('userid');
 					$att = new Attention;
 					$follow = new Follow;
 					$qna_pending=new QnasPending;
@@ -73,9 +61,19 @@ class Index extends Controller
 					}else{
 						$reply_list[$n]['qna_user_att'] = -1;
 					}
+					$this->assign('userid',$userid);
 				}
 				$reply_list[$n]['formatCoins'] = floatval($reply_list[$n]['qna_coins']);
 			}
+		}
+		if(Cookie::has('userid')){
+			$user = new Users;
+			$user->chkReminder(Cookie::get('userid'));
+			$userinfo = $user->getUserInfo(Cookie::get('userid'));
+			$this->assign('userinfo',$userinfo);
+			$this->assign('header_type','user');
+		}else{
+			$this->assign('header_type','normal');
 		}
 		$this->assign('reply_list',$reply_list);
 		if($qna_list){
@@ -84,17 +82,7 @@ class Index extends Controller
 			}
 		}
 		$this->assign('qna_list',$qna_list);
-		$this->assign('current_page','index');
+		$this->assign('current_page','feature');
         return $this->fetch(); 
-	}
-	
-	public function saveApplyQna(){
-		if(Cookie::has('userid')){
-			$qnaid = Request::instance()->post('qnaid');
-			$qna_pending=new QnasPending();
-			return $qna_pending->saveApply($qnaid, Cookie::get('userid'));
-		}else{
-			return $this->redirect('/index/login');
-		}
 	}
 }

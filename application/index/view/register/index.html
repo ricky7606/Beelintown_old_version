@@ -1,0 +1,60 @@
+{include file="header/index" header_type="$header_type" /}
+<style> 
+td { padding-right:10px; padding-bottom:20px;}
+input { background-color:#f7f8fa;}
+</style>
+
+<div style="height:60px;"></div>
+	<div class="form-group">
+    <table width="630" align="center">
+      <tr>
+        <td width="186" align="right">用户名</td>
+        <td colspan="2"><label for="textfield"></label>
+        <input name="username" type="text" class="form-control" id="username" width="20" style="background-color:#f7f8fa; height:45px; width:350px;" placeholder="4-20个字符，可使用数字/字母/中文" onblur="chkUsername();" /></td>
+        <td width="40"><img id="check_username" /></td>
+      </tr>
+      <tr>
+        <td align="right">手机号</td>
+        <td colspan="2"><input type="text" class="form-control" name="mobile" id="mobile" width="11" style="background-color:#f7f8fa; height:45px; width:350px;" placeholder="11位中国大陆手机号码" onblur="chkMobile();" onkeyup="this.value=this.value.replace(/\D/g,'');" /></td>
+        <td><img id="check_mobile" /></td>
+      </tr>
+      <tr>
+        <td align="right">密码</td>
+        <td colspan="2"><input type="password" class="form-control" name="password" id="password" style="background-color:#f7f8fa; height:45px; width:350px;" placeholder="大于6个字符，数字、大/小写字母、符号包含两种" onblur="chkPassword();" /></td>
+        <td><img id="check_password" /></td>
+      </tr>
+      <tr>
+        <td align="right">确认密码</td>
+        <td colspan="2"><input type="password" class="form-control" name="password2" id="password2" style="background-color:#f7f8fa; height:45px; width:350px;" placeholder="请再输一次密码" onblur="chkPassword2();" /></td>
+        <td><img id="check_password2" /></td>
+      </tr>
+      <tr>
+        <td align="right">验证码</td>
+        <td><input type="text" class="form-control" name="imgcode" id="imgcode" style="background-color:#f7f8fa; height:45px; width:200px;" placeholder="请输入图形验证码" onblur="chkImgcode();" onkeyup="value=value.replace(/[^\w\.\/]/ig,'');" /></td>
+        <td><img id="verify_img" src="{:captcha_src()}" width="150" alt="验证码" onclick="refreshVerify()" /><br />
+          <a href="javascript:void(0);" onclick="refreshVerify()">看不清？刷新<img src="/static/images/refresh.jpg"></a></td>
+        <td><img id="check_imgcode" /></td>
+      </tr>
+      <tr>
+        <td align="right">短信码</td>
+        <td width="202" align="left"><input type="text" class="form-control form-inline" name="smscode" id="smscode" style="background-color:#f7f8fa; height:45px; width:200px;" placeholder="请输入短信中的验证码" onblur="chkSmscode();" onkeyup="value=value.replace(/[^\w\.\/]/ig,'');" />
+        </td>
+        <td width="130" align="left"><button type="button" id="zphone" onClick="get_mobile_code();" class="btn btn-default" style="width:120px; height:45px; background-color:#748ba5; color:#FFF;">获取短信码</button></td>
+        <input type="hidden" name="register_token" id="register_token" value="{$register_token}" /></td>
+        <td width="48" align="left"><img id="check_smscode" /></td>
+      </tr>
+      
+      <tr>
+        <td align="right">&nbsp;</td>
+        <td colspan="2" align="left"><input type="checkbox" name="agreement" id="agreement" onclick="chkAgreement();" />
+        <label for="checkbox">我已阅读并同意《用户服务协议》</label></td>
+        <td align="left"><img id="check_agreement" /></td>
+      </tr>
+      <tr>
+        <td align="right">&nbsp;</td>
+        <td colspan="3" align="left"><button type="submit" name="submitbtn" id="submitbtn" onclick="submitForm();" class="btn btn-default" style="width:350px; height:45px; background-color:#004d9d; color:#FFF;">提交</button></td>
+      </tr>
+    </table>
+
+  </div>
+<script type="text/javascript" src="/static/js/register.js"></script>

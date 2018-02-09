@@ -1,0 +1,42 @@
+{include file="header/index" header_type="$header_type" /}
+<style> 
+td { padding-right:10px; padding-bottom:20px;}
+input { background-color:#f7f8fa;}
+</style>
+<link rel="stylesheet" href="/static/css/jquery.xctips.css">
+<script type="text/javascript" src="/static/js/jquery.xctips.js"></script>
+
+<div style="height:60px;"></div>
+	<div class="form-group">
+    <table width="630" align="center">
+      <tr>
+        <td width="186" align="right">手机号</td>
+        <td colspan="2"><input type="text" class="form-control" name="mobile" id="mobile" width="11" style="background-color:#f7f8fa; height:45px; width:350px;" placeholder="11位中国大陆手机号码" onblur="chkMobile();" /></td>
+        <td width="40"><img id="check_mobile" /></td>
+      </tr>
+      <tr>
+        <td align="right">密码</td>
+        <td colspan="2"><input type="password" class="form-control" name="password" id="password" width="20" style="background-color:#f7f8fa; height:45px; width:350px;" placeholder="大于6个字符，数字、大/小写字母、符号包含两种" onblur="chkPassword();" /></td>
+        <td><img id="check_password" /></td>
+      </tr>
+      <tr>
+        <td align="right">验证码</td>
+        <td><input type="text" class="form-control" name="imgcode" id="imgcode" style="background-color:#f7f8fa; height:45px; width:200px;" placeholder="请输入图形验证码" onblur="chkImgcode();" /></td>
+        <td width="130"><img id="verify_img" src="{:captcha_src()}" width="150" alt="验证码" onclick="refreshVerify()" /><br />
+          <a href="javascript:void(0);" onclick="refreshVerify()">看不清？刷新<img src="/static/images/refresh.jpg"></a></td>
+        <td><img id="check_imgcode" /></td>
+      </tr>
+      <tr>
+        <td align="right">&nbsp;</td>
+        <td colspan="3" align="left"><input type="checkbox" name="isOneMonthLogin" id="isOneMonthLogin" value="yes" />
+        <label for="isOneMonthLogin">一个月内免登录</label></td>
+      </tr>
+      <tr>
+        <td align="right">&nbsp;</td>
+        <td colspan="3" align="left"><button type="submit" name="loginbtn" id="loginbtn" onclick="submitForm();" class="btn btn-default" style="width:350px; height:45px; background-color:#004d9d; color:#FFF;">登录</button></td>
+      </tr>
+    </table>
+
+  </div>
+<div style="height:200px;"></div>
+<script type="text/javascript" src="/static/js/login.js"></script>
