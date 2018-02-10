@@ -25,7 +25,7 @@
             <!-- 标签区域结束 -->
             
             <div style="height:10px";></div>
-            <div class="content_box" id="content">
+            <div class="content_box_big" id="content">
             {volist name="reply_list" id="reply" empty="<div style='width:100%;text-align:center; padding:200px; font-size:18px; font-weight:bold;'>暂时没有问答数据</div>"}
             <div class="header_title split_left"><span class="am-icon-comment am-icon-sm" style="color:#900;"></span> 提问者：
             <img src="{if condition="$reply.qna_personal_pic == ''"}/static/images/profile_pic.jpg{else /}{$reply.qna_personal_pic}{/if}" class="user_pic" style="margin-right:20px;"> <span class="header_title" style="cursor:pointer;" onclick="window.location.href='/index/userreplydetail?userid={$reply.qna_userid}';">{$reply.qna_username}</span>
@@ -72,7 +72,7 @@
             </div>
             <div style="height:20px;"></div>
             <div>
-            <div class="grey_text split_left"><span class="am-icon-comments am-icon-sm" style="color:#09F;"></span> 35个评论 <span class="am-icon-star am-icon-sm" style="color:#09F;"></span> 60个收藏 <span class="am-icon-heart am-icon-sm" style="color:#09F;"></span> 87个赞</div>
+            <div class="grey_text split_left"><!--<span class="am-icon-comments am-icon-sm" style="color:#09F;"></span> 35个评论 --><span class="am-icon-star am-icon-sm" style="color:#09F;"></span> {$reply.followCount}个收藏 <!--<span class="am-icon-heart am-icon-sm" style="color:#09F;"></span> 87个赞--></div>
             <div class="split_right">
             	{if condition="$reply.formatCoins > 0"}
                 	{if condition="$header_type == 'user'"}
@@ -117,19 +117,18 @@
             {/volist}
             <div style="text-align:center;">{$reply_list->render()}</div>
             </div>
+            <!--
             <div class="right_column">
             <div class="right_banner_box"><img src="/static/images/banner-1.jpg" style="width:100%;" class="banner_img"></div>
             <div class="right_box header_title">
             <p class="header_title">最新提问</p>
-            {volist name="qna_list" id="qnaid"}
-            	<div><a href="/index/qnadetails?id={$qnaid.qnaid}">{$qnaid.shortTitle}</a></div>
-            {/volist}
             </div>
             <div class="right_banner_box"><img src="/static/images/banner-2.jpg" style="width:100%;" class="banner_img"></div>
             <div class="right_box header_title">
             <p style="color:#666; font-size:12px;">下载比邻Call &middot; 下载比邻钱包<br /><br />联系我们 &copy;2018</p>
             </div>
             </div>
+            -->
             <div style="clear:both;"></div>
             <div style="height:20px;"></div>
         </div>

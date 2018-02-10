@@ -74,6 +74,30 @@
                 {/volist}
                 {/if}
 
+                {if condition="$qnaid['invite'] != ''"}
+                <div align="center"><hr style="height:1px; color:#CCC; width:90%;"></div>
+                <div style="padding-left:60px;" class="header_title">邀请记录 >> </div>
+                <div style="height:10px"></div> 
+                {volist name="qnaid.invite" id="invite_user"}
+            	<div style="padding-left:60px;"><img src="{if condition="$invite_user.pending_user_personal_pic == ''"}/static/images/profile_pic.jpg{else /}{$invite_user.pending_user_personal_pic}{/if}" class="user_pic_small" style="margin-right:20px;"><a class="header_title"  href="/index/userreplydetail?userid={$invite_user.pending_userid}" target="_blank" style="margin-right:50px;">{$invite_user.pending_username}</a> 邀请日期：{$invite_user.pending_date}
+                {switch name="invite_user.status"}
+                {case value="-1"}
+                <span style="color:#999; margin-left:20px;"> <i class="am-icon-trash am-icon-sm"></i> 已撤销邀请</span></div>
+                {/case}
+                {case value="1"}
+                <button type="button" class="btn btn-default user_button_grey_small" style="width:auto;" onclick="cancelInvite('{$invite_user.pendingid}');this.disabled='disabled'"><i class="am-icon-trash am-icon-sm"></i> 撤销邀请</button></div>
+                {/case}
+                {case value="2"}
+                <span style="color:#900; margin-left:20px;"> <i class="am-icon-close am-icon-sm"></i> 已拒绝邀请</span></div>
+                {/case}
+                {case value="3"}
+                <span style="color:#06C; margin-left:20px;"> <i class="am-icon-check am-icon-sm"></i> 已回答</span></div>
+                {/case}
+                {/switch}
+                <div style="clear:both; height:10px;"></div>
+                {/volist}
+                {/if}
+
                 {if condition="count($qnaid['reply'])>0"}
                 <div align="center"><hr style="height:1px; color:#CCC; width:90%;"></div>
                 <div style="padding-left:60px;" class="header_title"><span class="am-icon-comments-o am-icon-sm" style="color:#06C;"></span> 回答记录 >> </div>

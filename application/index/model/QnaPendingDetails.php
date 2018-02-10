@@ -57,5 +57,15 @@ class QnaPendingDetails extends Model {
         return $new_pending;   // 返回修改后的数据
 	}
 
+	public function getPendingInviteByQnaId($qnaid){
+        $new_pending = $this->where('qnaid', $qnaid)
+		->where('pending_type', 1)
+		->field('pendingid,qnaid,status,pending_userid,pending_username,pending_date,pending_user_personal_pic')
+		->select();          // 查询用户
+        if (empty($new_pending)) {                 // 判断是否出错
+            return false;
+        }
+        return $new_pending;   // 返回修改后的数据
+	}
 
 }

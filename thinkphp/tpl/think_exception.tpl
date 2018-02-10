@@ -410,9 +410,9 @@
     <?php } ?>
 
     <div class="copyright">
-        <a title="官方网站" href="http://www.thinkphp.cn">ThinkPHP</a> 
-        <span>V<?php echo THINK_VERSION; ?></span> 
-        <span>{ 十年磨一剑-为API开发设计的高性能框架 }</span>
+        <a title="官方网站" href="http://www.beelintown.com.cn">比邻小镇</a> 
+        <span>V1.0.1</span> 
+        <span>{ 基于电子货币的全方位社交应用 }</span>
     </div>
     <?php if(\think\App::$debug) { ?>
     <script>

@@ -85,14 +85,14 @@
 						if(value != ''){
 							tmpArr2 = value.split('###');
 							if(tmpArr2[2] != ''){
-								tmpStr += "<img src=\""+tmpArr2[2]+"\" class=\"user_pic\" style=\"margin-right:20px;\"> ";
+								tmpStr += "<div style=\"float:left;\"><img src=\""+tmpArr2[2]+"\" class=\"user_pic\" style=\"margin-right:20px;\"> ";
 							}else{
 								tmpStr += "<img src=\"/static/images/profile_pic.jpg\" class=\"user_pic\" style=\"margin-right:20px;\"> ";
 							}
-							tmpStr += "<a href=\"/index/userreplydetail?userid="+tmpArr2[0]+"\" title=\"点击查看该用户\" target=\"details\" style=\"margin-right:40px;\">"+tmpArr2[1]+"</a>";
+							tmpStr += "<a href=\"/index/userreplydetail?userid="+tmpArr2[0]+"\" title=\"点击查看该用户\" target=\"details\" style=\"margin-right:40px;\">"+tmpArr2[1]+"</a></div>";
 						}
 					});
-					tmpStr += "</div>";
+					tmpStr += "<div style=\"clear:both;\"></div></div>";
 					$("#data_list").html(tmpStr);
 				}
 			});

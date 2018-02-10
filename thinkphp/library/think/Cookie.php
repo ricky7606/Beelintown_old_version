@@ -93,6 +93,14 @@ class Cookie
             $value = 'think:' . json_encode($value);
         }
         $expire = !empty($config['expire']) ? $_SERVER['REQUEST_TIME'] + intval($config['expire']) : 0;
+		//cookie混淆
+		$key = isset(self::$config['coockie_encode']) ? self::$config['coockie_encode'] : '' ;
+		if(!empty($key)){
+			$key = md5($key);
+			$sc = new \think\SysCrypt($key);
+			$value =$sc->php_encrypt($value);
+		}
+		//cookie混淆结束
         if ($config['setcookie']) {
             setcookie($name, $value, $expire, $config['path'], $config['domain'], $config['secure'], $config['httponly']);
         }
@@ -142,6 +150,14 @@ class Cookie
         $name   = $prefix . $name;
         if (isset($_COOKIE[$name])) {
             $value = $_COOKIE[$name];
+			//cookie混淆
+			$key = isset(self::$config['coockie_encode']) ? self::$config['coockie_encode'] : '' ;
+			if(!empty($key)){
+				$key=md5($key);
+				$sc = new \think\SysCrypt($key);
+				$value=$sc->php_decrypt($value);
+			}
+			//cookie混淆结束
             if (0 === strpos($value, 'think:')) {
                 $value = substr($value, 6);
                 $value = json_decode($value, true);

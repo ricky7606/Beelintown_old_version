@@ -120,6 +120,22 @@ function apply_update(applyid,applystatus){
 	}
 }
 
+function cancelInvite(pendingid){
+	text = "您确认要撤销对该用户的回答邀请吗？";
+	if(confirm(text)){
+		$.post('/index/userqnas/cancelInvite', {pendingid:pendingid}, function(msg) {
+			if(msg=='ok'){
+				xcsoft.success('撤销成功！',2000);
+				setTimeout("window.location.reload(true)", 2000 ); //3秒后刷新
+				return true;
+			}else{
+				xcsoft.error(msg,3000);
+				return false;
+			}
+		});
+	}
+}
+
 function reply_update(replyid,replystatus,i){
 	var go_next = false, share = false;;
 	$("#acceptBtn"+i).attr('disabled','disabled');

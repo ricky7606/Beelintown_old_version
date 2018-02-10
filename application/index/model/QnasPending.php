@@ -62,6 +62,7 @@ class QnasPending extends Model {
 
 	//处理邀请或申请记录
 //	回答流程(pending)状态码说明：
+//	-1 - 撤销邀请、撤销申请
 //	0 - 待处理，通常是申请回答；
 //	1 - 通过；如邀请回答以及申请通过；
 //	2 - 拒绝；如邀请被拒绝以及申请被拒绝或申请通过后拒绝回答；
@@ -90,6 +91,19 @@ class QnasPending extends Model {
 			$coins = $pending_info->coins;
 			$pending_type = $pending_info->pending_type;
 					
+			//撤销邀请回答需要创建解冻记录
+			if($pending_type == 1 && $pending_status == -1){
+				$transaction = new Transactions;
+				$result_trans = $transaction->saveTransaction($payer_userid, $coins, 3, $qnaid, $payee_userid, $pendingid);
+				$commission = bcmul($coins, 0.1, 8);
+				$result_trans = $transaction->saveTransaction($payer_userid, $commission, 4, $qnaid, $payee_userid, $pendingid);
+				$message_text = "您撤销了对用户“<a href=\"\\index\\userreplydetail?userid=".$payee_userid."\" target=\"_blank\">".$pending_info->pending_username."</a>”关于问题：“<a href=\"\\index\\qnadetails?id=".$qnaid."\" target=\"_blank\">".$pending_info->title."</a>”的回答邀请。相应的悬赏及佣金已经解冻。";
+				$result_message = $message->saveNewMessage($payer_userid, $message_text);
+				if($result_trans === false || $result_message === false){
+					$error_flag = true;
+					$error_msg = "发生错误";
+				}
+			}
 			//邀请回答拒绝需要创建解冻记录
 			if($pending_type == 1 && $pending_status == 2){
 				$transaction = new Transactions;

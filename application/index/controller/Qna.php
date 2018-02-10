@@ -86,16 +86,22 @@ class Qna extends Controller
 		$content_text = Request::instance()->post('content_text');
 		$thumb_img = getThumbImg($content);
 		$pendingid = Request::instance()->post('pendingid');
-		if($thumb_img != ''){
-			$content_text = getContentText($content_text,375);
+		$pending = new QnasPending;
+		$pending_info = $pending->getPendingDetailsByPendingId($pendingid);
+		if($pending_info->status == 1){
+			if($thumb_img != ''){
+				$content_text = getContentText($content_text,375);
+			}else{
+				$content_text = getContentText($content_text,500);
+			}
+			if($content!=""){
+				$qna = new QnasReply;
+				return $qna->saveReplyQna($userid, $content, $content_text, $thumb_img, $qnaid, $pendingid);
+			}else{
+				return "数据有误，请检查后重试";
+			}
 		}else{
-			$content_text = getContentText($content_text,500);
-		}
-		if($content!=""){
-			$qna = new QnasReply;
-			return $qna->saveReplyQna($userid, $content, $content_text, $thumb_img, $qnaid, $pendingid);
-		}else{
-			return "数据有误，请检查后重试";
+			return "回答提交失败，提问者可能已关闭问题或撤销邀请。";
 		}
 	}
 	

@@ -38,6 +38,7 @@ class Userqnas extends Controller
 				$qna_list[$n]->reply = $reply_list;
 				$qna_list[$n]->formatCoins = floatval($qna->coins);
 				$qna_list[$n]->apply = $pending->getPendingDetailsByQnaId($qna->qnaid);
+				$qna_list[$n]->invite = $pending->getPendingInviteByQnaId($qna->qnaid);
 			}
 		}
         $this->assign('qna_list',$qna_list);
@@ -62,6 +63,19 @@ class Userqnas extends Controller
 		if($applystatus == 1 || $applystatus == 2){
 			$apply = new QnasPending;
 			return $apply->updatePending($applyid,$applystatus);
+		}else{
+			return "数据错误！";
+		}
+	}
+
+	public function cancelInvite(){
+		if(!Cookie::has('userid')){
+			return $this->redirect('/index/login');
+		}
+		$pendingid = Request::instance()->post('pendingid');
+		if($pendingid != ''){
+			$invite = new QnasPending;
+			return $invite->updatePending($pendingid,-1);
 		}else{
 			return "数据错误！";
 		}

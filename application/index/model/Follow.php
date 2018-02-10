@@ -71,6 +71,13 @@ class Follow extends Model {
 		->delete();
 		return $result;
 	}
+	
+	public function getFollowCount($qnaid){
+		$result = $this->where('qnaid', $qnaid)
+		->field('count(*) as followCount')
+		->find();
+		return $result;
+	}
 
 	public function users()
     {
