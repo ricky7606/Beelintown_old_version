@@ -40,9 +40,9 @@ class Tags extends Model {
 			->limit(1)
 			->find();
 			if($tmpTag){
-				$tmpStr .= $tag->tag.":".$tag->id.":true,";
+				$tmpStr .= $tag->tag."___".$tag->id."___true$$$";
 			}else{
-				$tmpStr .= $tag->tag.":".$tag->id.":false,";
+				$tmpStr .= $tag->tag."___".$tag->id."___false$$$";
 			}
 		}
         return $tmpStr;   // 返回修改后的数据
@@ -50,14 +50,20 @@ class Tags extends Model {
 	
 	public function searchTags($tag, $num = 20, $page = 1){
 		$noSearched = false;
-		$tag_list = $this->where('tag','like','%'.$tag.'%')
-		->field('count(*) as search_count')
-		->find();
-        if ($tag_list->search_count<1) {                 // 判断是否出错
+		if(!$tag == ''){
+			$tag_list = $this->where('tag','like','%'.$tag.'%')
+			->field('count(*) as search_count')
+			->find();
+       		if ($tag_list->search_count<1) {
+				$noSearched = true;
+			}
+		}else{
+			$noSearched = true;
+		}
+        if ($noSearched) {                 // 判断是否出错
 			$tag_list = $this->where('level',1)
 			->field('count(*) as search_count')
 			->find();
-			$noSearched = true;
         }
 		if($tag_list->search_count<1){
 			return "";
@@ -76,15 +82,15 @@ class Tags extends Model {
 			->limit($num*($page-1), $num)
 			->select();
 		}
-		$tmpStr = $noSearched.",".$total_page.",".$page."#";
+		$tmpStr = $noSearched."___".$total_page."___".$page."###";
 		foreach($tag_result as $tag){
 			$tmpTag = $this->where('parentid', $tag->id)
 			->limit(1)
 			->find();
 			if($tmpTag){
-				$tmpStr .= $tag->tag.":".$tag->id.":true,";
+				$tmpStr .= $tag->tag."___".$tag->id."___true$$$";
 			}else{
-				$tmpStr .= $tag->tag.":".$tag->id.":false,";
+				$tmpStr .= $tag->tag."___".$tag->id."___false$$$";
 			}
 		}
         return $tmpStr;   // 返回修改后的数据
@@ -104,15 +110,15 @@ class Tags extends Model {
 		->order('convert(tag using gbk)','asc')
 		->limit($num*($page-1), $num)
 		->select();
-		$tmpStr = $total_page.",".$page."#";
+		$tmpStr = $total_page."___".$page."###";
 		foreach($tag_list as $tag){
 			$tmpTag = $this->where('parentid', $tag->id)
 			->limit(1)
 			->find();
 			if($tmpTag){
-				$tmpStr .= $tag->tag.":".$tag->id.":true,";
+				$tmpStr .= $tag->tag."___".$tag->id."___true$$$";
 			}else{
-				$tmpStr .= $tag->tag.":".$tag->id.":false,";
+				$tmpStr .= $tag->tag."___".$tag->id."___false$$$";
 			}
 		}
         return $tmpStr;   // 返回修改后的数据

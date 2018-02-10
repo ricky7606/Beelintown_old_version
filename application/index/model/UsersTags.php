@@ -51,7 +51,7 @@ class UsersTags extends Model {
 				if($result){
 					$tags = new Tags;
 					$new_tag = $tags->where('id',$tagid)->limit(1)->find();
-					$str = "ok,".$new_tag->tag.",".$user_tagid;
+					$str = "ok___".$new_tag->tag."___".$user_tagid;
 					return $str;
 				}else{
 					return "添加失败";

@@ -43,7 +43,7 @@ class UserTagDetails extends Model {
 		$tmpStr = "";
 		if($user_list){
 			foreach($user_list as $user){
-				$tmpStr .= $user->userid."#".$user->username."#".$user->personal_pic.",";
+				$tmpStr .= $user->userid."###".$user->username."###".$user->personal_pic."$$$";
 			}
 		}
         return $tmpStr;   // 返回修改后的数据

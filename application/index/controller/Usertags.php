@@ -40,12 +40,8 @@ class Usertags extends Controller
 		$page = Request::instance()->post('page');
 		if($page == ''){$page = 1;}
 		$searchtag = Request::instance()->post('tag');
-		if($searchtag == ""){
-			return "";
-		}else{
-			$tag = new Tags;
-			return $tag->searchTags($searchtag, 20, $page);
-		}
+		$tag = new Tags;
+		return $tag->searchTags($searchtag, 20, $page);
 	}
 	
 	public function addTag(){
