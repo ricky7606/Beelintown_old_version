@@ -22,7 +22,7 @@ body{
 	margin-left: 0px;
 	margin-right: 0px;
 } 
-.div{ margin:0 auto; width:1200px; height:115px; text-align:left; font-size:18px;} 
+.div{ margin:0 auto; width:1200px; height:70px; text-align:left; font-size:1.25em;} 
 .img_btn{
 	position: absolute;
 	top: 50%;
@@ -76,28 +76,28 @@ body{
 <div style="width:100%; border-bottom-width:1px; border-bottom-color:#CCC; border-bottom-style:solid;">
 <div class="div">
 <form class="form-inline">
-        <img src="/static/images/logo.jpg" />
+        <img style="height:70px; padding-right: 20px" src="/static/images/logo.jpg" />
         <div class="form-group header_title" id="index_header" style="padding-left:10px; cursor:pointer;" onclick="window.location.href='/index'">首页</div>
         <div class="form-group header_title" id="qnalist_header" style="padding-left:10px; cursor:pointer;" onclick="window.location.href='/index/qnalist'">问答</div>
         <div class="form-group header_title" id="feature_header" style="padding-left:10px; cursor:pointer; padding-right:20px;" onclick="window.location.href='/index/feature'">精选</div>
-        <div class="form-group" style="border:1px solid #cccccc; border-radius:4px; width:470px;height:62px; background-color:#f7f8fa;">
-            <input type="text" style="border:0;margin-left:5px;width:400px;height:55px;line-height:50px; background-color:#f7f8fa;" id="search_items" placeholder="搜索您感兴趣的问题..." onkeydown="return chkSearch(event);">
-            <img src="/static/images/glass.jpg" style="cursor:pointer;" onclick="searchQnas();" />
+        <div class="form-group" style="border:1px solid #cccccc; border-radius:4px; width:400px;height:35px; background-color:#f7f8fa;">
+            <input type="text" style="border:0;margin-left:5px;width:320px;height:30px;line-height:25px;font-size: 0.8em; background-color:#f7f8fa;" id="search_items" placeholder="搜索您感兴趣的问题..." onkeydown="return chkSearch(event);">
+            <img src="/static/images/glass.jpg" style="cursor:pointer;height: 30px;margin-top: 0px;" onclick="searchQnas();" />
         </div>
         {switch name="header_type"}
 		{case value="normal"}
-        <img src="/static/images/ask_btn.png"  style="padding-left:10px; cursor:pointer;" onclick="window.location.href='/index/qna';" />
+        <img src="/static/images/ask_btn.png"  style="padding-left:10px; cursor:pointer; height: 35px; margin-right: 200px" onclick="window.location.href='/index/qna';" />
     	<div class="form-group" style="padding-left:50px; padding-right:20px; cursor:pointer;" onclick="window.location.href='/index/login'">登录</div>
         <div class="form-group"><img src="/static/images/space.jpg"></div>
         <div class="form-group" style="padding-left:20px; cursor:pointer;" onclick="window.location.href='/index/register'">注册</div>
         {/case}
 		{case value="register"}
         
-        <div class="form-group" style="padding-left:50px;"><span style="padding-left:50px; padding-right:10px; color:#666;">已有账号立即</span><button type="button" id="login" class="btn btn-default" style="width:60px; height:50px; background-color:#748ba5; color:#FFF;" onclick="window.location.href='/index/login'">登录</button></div>
+        <div class="form-group" style="padding-left:50px;"><span style="padding-left:50px; padding-right:10px; ">已有账号立即</span><button type="button" id="login" class="btn btn-default" style="width:60px; height:50px; background-color:#748ba5; color:#FFF;" onclick="window.location.href='/index/login'">登录</button></div>
         {/case}
 		{case value="login"}
         
-        <div class="form-group" style="padding-left:50px;"><span style="padding-left:50px; padding-right:10px; color:#666;">还没有账号？</span><button type="button" id="login" class="btn btn-default" style="width:60px; height:50px; background-color:#748ba5; color:#FFF;" onclick="window.location.href='/index/register'">注册</button></div>
+        <div class="form-group" style="padding-left:50px;"><span style="padding-left:50px; padding-right:10px; ">还没有账号？</span><button type="button" id="login" class="btn btn-default" style="width:60px; height:50px; background-color:#748ba5; color:#FFF;" onclick="window.location.href='/index/register'">注册</button></div>
         {/case}
 		{case value="user"}
         <img src="/static/images/ask_btn.png" style="padding-left:10px; cursor:pointer;" onclick="window.location.href='/index/qna';" />
