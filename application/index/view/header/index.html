@@ -100,9 +100,9 @@ body{
         <div class="form-group" style="padding-left:50px;"><span style="padding-left:50px; padding-right:10px; ">还没有账号？</span><button type="button" id="login" class="btn btn-default" style="width:60px; height:50px; background-color:#748ba5; color:#FFF;" onclick="window.location.href='/index/register'">注册</button></div>
         {/case}
 		{case value="user"}
-        <img src="/static/images/ask_btn.png" style="padding-left:10px; cursor:pointer;" onclick="window.location.href='/index/qna';" />
-        <div class="dropdown" style=" width:200px;; padding-right:50px;text-align:right;"><a href="/index/userpending"><img src="{if condition='$userinfo.personal_pic' != ''}{$userinfo.personal_pic}{else /}/static/images/profile_pic.jpg{/if}" class="top_user_pic"></a>{if condition="$userinfo.message_count>0"}<span class="reminder_top">{$userinfo.message_count}</span>{/if}<!--<b class="caret"></b>-->
-            <div class="dropdown-content" style="z-index:100">
+        <img src="/static/images/ask_btn.png" style="padding-left:10px; cursor:pointer;height: 35px;" onclick="window.location.href='/index/qna';" />
+        <div class="dropdown" style=" width:200px;; padding-right:50px;text-align:right;margin-left: 140px"><a href="/index/userpending"><img src="{if condition='$userinfo.personal_pic' != ''}{$userinfo.personal_pic}{else /}/static/images/profile_pic.jpg{/if}" class="top_user_pic"></a>{if condition="$userinfo.message_count>0"}<span class="reminder_top">{$userinfo.message_count}</span>{/if}<!--<b class="caret"></b>-->
+            <div class="dropdown-content" style="z-index:100; font-size: 0.8em">
               <a href="/index/userpending">用户管理后台</a>
               <a href="/index/userprofile">编辑个人资料</a>
               <a href="/index/login/Logout">退出登录</a>
@@ -110,7 +110,7 @@ body{
         </div>
 		{/case}
 		{default /}
-        <img src="/static/images/ask_btn.png" style="padding-left:10px; cursor:pointer;" onclick="window.location.href='/index/qna';" />
+        <img src="/static/images/ask_btn.png" style="padding-left:10px; cursor:pointer;height: 35px;" onclick="window.location.href='/index/qna';" />
     	<div class="form-group" style="padding-left:50px; padding-right:20px; cursor:pointer;" onclick="window.location.href='/index/login'">登录</div>
         <div class="form-group"><img src="/static/images/space.jpg"></div>
         <div class="form-group" style="padding-left:20px; cursor:pointer;" onclick="window.location.href='/index/register'">注册</div>
