@@ -29,7 +29,7 @@
                 <div class="inactive_menu" onclick="window.location.href='/index/userreply'">我的回答{if condition="$userinfo.answer_reminder>0"}<span class="reminder">{$userinfo.answer_reminder}</span>{/if}</div>
                 <div class="inactive_menu" onclick="window.location.href='/index/userattention'">我的关注{if condition="$userinfo.attention_reminder>0"}<span class="reminder">{$userinfo.attention_reminder}</span>{/if}</div>
                 <div class="inactive_menu" onclick="window.location.href='/index/userfollow'">我的收藏</div>
-                <div class="inactive_menu"  onclick="window.location.href='/index/usercoin'">我的比邻币{if condition="$userinfo.transaction_reminder>0"}<span class="reminder">{$userinfo.transaction_reminder}</span>{/if}</div>
+                <div class="inactive_menu"  onclick="window.location.href='/index/usercoins'">我的比邻币{if condition="$userinfo.transaction_reminder>0"}<span class="reminder">{$userinfo.transaction_reminder}</span>{/if}</div>
                 <div class="active_menu last_menu">消息中心{if condition="$userinfo.message_reminder>0"}<span class="reminder">{$userinfo.message_reminder}</span>{/if}</div>
                 <div style="clear:both;"></div>
             </div>
@@ -67,7 +67,7 @@
                 </table>
                 </div>
                 <div style="clear:both;"></div>
-                <div style="text-align:center;">{$message_list->render()}</div>
+                <div style="text-align:center;font-size: 0.9em">{$message_list->render()}</div>
             </div>
         </div>
         <div style="height:20px;"></div>
