@@ -2,32 +2,29 @@
 <link rel="stylesheet" href="/static/css/user_section.css">
 <link rel="stylesheet" href="/static/css/reveal.css">
 <script src="/static/js/wangEditor.min.js"></script>
-<script type="text/javascript" src="/static/js/math.js"></script>
 <div style="background-color:#F2F2F2;">
     <div id="user_profile" class="user_profile">
         <div style="margin:0 auto; width:1200px;">
             <div style="height:10px"></div>
-            <div>
-                <div style="height:200px; overflow:hidden;" id="profile_bg"><img src="{if condition='$userinfo.personal_bg' != ''}{$userinfo.personal_bg}{else /}/static/images/profile_bg.jpg{/if}" style="width:100%;opacity: 0.5;filter:alpha(opacity=50);"></div>
+            <div style="background: white; height: 280px; margin-bottom: 10px;">
+                <div style="height:120px; overflow:hidden;" id="profile_bg"><img src="{if condition='$userinfo.personal_bg' != ''}{$userinfo.personal_bg}{else /}/static/images/profile_bg.jpg{/if}" style="width:100%;opacity: 0.5;filter:alpha(opacity=50);"></div>
                 <div style="height:10px";></div>
                 <div style="width:310px; float:left; text-align:center; height:190px;"><img src="{if condition='$userinfo.personal_pic' != ''}{$userinfo.personal_pic}{else /}/static/images/profile_pic.jpg{/if}" class="profile_pic">&nbsp;</div>
                 <div style="width:890px; float:left; text-align:left;">
-                    <div style="width:590px; float:left; text-align:left;" class="content_title"> {$username}&nbsp;</div>
-                    <div style="width:300px; float:left; text-align:right;"><button type="button" class="btn btn-primary" style="height:45px; background-color:#004d9d; color:#FFF;" onclick="window.location.href='/index/userprofile'"><i class="am-icon-edit"></i> 编辑我的资料</button> <button type="button" class="btn btn-default" style="height:45px; " onclick="window.location.href='/index/login/Logout';"><i class="am-icon-sign-out"></i> 退出登录</button></div>
+                    <div style="width:580px; float:left; text-align:left;" class="content_title"> {$username}&nbsp;</div>
+                    <div style="margin-right:10px;width:300px; float:left; text-align:right;"><button type="button" class="btn btn-primary" style="height:45px; background-color:#004d9d; color:#FFF;font-size: 0.8em" onclick="window.location.href='/index/userprofile'"><i class="am-icon-edit"></i> 编辑我的资料</button> <button type="button" class="btn btn-default" style="height:40px; font-size: 0.8em" onclick="window.location.href='/index/login/Logout';"><i class="am-icon-sign-out"></i> 退出登录</button></div>
                     <div style="clear:both;"></div>
-                    <div>{if condition="$userinfo.brief != ''"}<span style="color:#03C;">{$userinfo.brief}</span>{else /}还没想好该怎么来介绍自己{/if}</div>
-                    <div style="height:20px";></div>
-                    <div style="line-height:50px;" class="tagwrap">{volist name="user_tag_list" id="usertag" length="6" empty="<span style='color:#03C;'>暂未选择标签</span>"}{if condition="$i==6"} <span class="tag_more" onclick="window.location.href='usertags'">更多...</span>{else /} <span class="tag">{$usertag.tag}</span>{/if}{/volist}</div>
+                    <div>{if condition="$userinfo.brief"}<span style="color:#03C;">{$userinfo.brief}</span>{else /}还没想好该怎么来介绍自己{/if}</div>
+                    <div style="line-height:40px;font-size: 0.9em" class="tagwrap">{volist name="user_tag_list" id="usertag" length="6" empty="<span style='color:#03C;'>暂未选择标签</span>"}{if condition="$i==6"} <span class="tag_more" onclick="window.location.href='usertags'">更多...</span>{else /} <span class="tag">{$usertag.tag}</span>{/if}{/volist}</div>
                 </div>
                 <div style="clear:both;"></div>
             </div>
         </div>
     </div>
-    <div style="height:10px"></div> 
     <div id="management">
         <div class="management_section">
-        	<div id="menu_items" style="background-color:#EEE;">
-            	<div class="inactive_menu" onclick="window.location.href='/index/userpending'">等我回答{if condition="$userinfo.pending_reminder>0"}<span class="reminder">{$userinfo.pending_reminder}</span>{/if}</div>
+            <div id="menu_items" style="background-color:#FFF;width:1180px;margin-bottom: 10px;float: left;">
+                <div class="inactive_menu" onclick="window.location.href='/index/userpending'">等我回答{if condition="$userinfo.pending_reminder>0"}<span class="reminder">{$userinfo.pending_reminder}</span>{/if}</div>
                 <div class="inactive_menu" onclick="window.location.href='/index/userqnas'">我的提问{if condition="$userinfo.reply_apply_reminder>0"}<span class="reminder">{$userinfo.reply_apply_reminder}</span>{/if}</div>
                 <div class="inactive_menu" onclick="window.location.href='/index/userreply'">我的回答{if condition="$userinfo.answer_reminder>0"}<span class="reminder">{$userinfo.answer_reminder}</span>{/if}</div>
                 <div class="inactive_menu" onclick="window.location.href='/index/userattention'">我的关注{if condition="$userinfo.attention_reminder>0"}<span class="reminder">{$userinfo.attention_reminder}</span>{/if}</div>
@@ -40,13 +37,15 @@
                 <div style="height:200px;"><img src="/static/images/loading.gif"></div>
             </div>
             <div class="content_section">
-            	<div style='width:100%; padding:20px; height:60px; font-size:16px;'>
-                <span class="am-icon-bitcoin am-icon-sm" style="color:#FC0;"></span> 当前拥有比邻币：<b>{$userinfo.coins}</b>  <span class="am-icon-bitcoin am-icon-sm" style="color:#999; margin-left:30px;"></span> 冻结中的比邻币：<b>{$userinfo.frozen_coins}</b> <a href="javascript:void(0);" data-reveal-id="coins_box" data-animation="fade" class="btn btn-default user_button_blue_small">我要提现</a> <a href="/index/userwallet" class="btn btn-default user_button_blue_small">钱包管理</a>
+            	<div style='width:100%; padding:20px; height:60px; font-size:1em;'>
+                <span class="am-icon-bitcoin am-icon-sm" style="color:#FC0;"></span> 当前拥有比邻币：<b>{$userinfo.coins}</b>  <span class="am-icon-bitcoin am-icon-sm" style="color:#999; margin-left:30px;"></span> 冻结中的比邻币：<b>{$userinfo.frozen_coins}</b>
+                <div style="float: right"> <a href="javascript:void(0);" data-reveal-id="coins_box" data-animation="fade" class="btn btn-default user_button_blue_small">我要提现</a> <a href="/index/userwallet" class="btn btn-default user_button_blue_small">钱包管理</a>
                 </div>
-                <div style="height:20px"></div> 
+                </div>
+                <div style="height:50px"></div> 
                 {if condition="$userinfo.transaction_reminder>0"}<div style="width:100%; padding-left:20px; text-align:left; color:#900;"><span class="am-icon-line-chart am-icon-sm" style="color:#06C; margin-left:10px;"></span> 共有{$userinfo.transaction_reminder}条新交易记录</div>{/if}
                 <div style="padding:20px; padding-top:10px;">
-                <table width="1000" class="table">
+                <table width="1000" class="table" style="font-size: 0.9em">
                   <thead>
                   <tr>
                     <th>交易日期</th>
@@ -61,55 +60,55 @@
                   {volist name="trans_list" id="trans" empty="<tr><td colspan='7'>您还没有比邻币交易记录</td></tr>"}
                   {switch name="trans.transaction_type"}
                   	{case value='0'}
-                  <tr class="success">
+                  <tr style="background:#fff">
                     {/case}
                   	{case value='1'}
-                  <tr class="active">
+                  <tr style="background:#ccc">
                     {/case}
                   	{case value='2'}
-                  <tr class="active">
+                  <tr style="background:#ccc">
                     {/case}
                   	{case value='3'}
-                  <tr class="warning">
+                  <tr style="background:#ddd">
                     {/case}
                   	{case value='4'}
-                  <tr class="warning">
+                  <tr style="background:#ddd">
                     {/case}
                   	{case value='5'}
-                  <tr class="danger">
+                  <tr style="background:#eee">
                     {/case}
                   	{case value='6'}
-                  <tr class="danger">
+                  <tr style="background:#eee">
                     {/case}
                   	{case value='7'}
-                  <tr class="danger">
+                  <tr style="background:#eee">
                     {/case}
                   	{case value='8'}
-                  <tr class="success">
+                  <tr style="background:#fff">
                     {/case}
                   	{case value='9'}
-                  <tr class="success">
+                  <tr style="background:#fff">
                     {/case}
                   	{case value='10'}
-                  <tr class="warning">
+                  <tr style="background:#ddd">
                     {/case}
                   	{case value='11'}
-                  <tr class="danger">
+                  <tr style="background:#eee">
                     {/case}
                   	{case value='12'}
-                  <tr class="success">
+                  <tr style="background:#fff">
                     {/case}
                   	{case value='13'}
-                  <tr class="active">
+                  <tr style="background:#ccc">
                     {/case}
                   	{case value='14'}
-                  <tr class="danger">
+                  <tr style="background:#eee">
                     {/case}
                   	{case value='15'}
-                  <tr class="warning">
+                  <tr style="background:#ddd">
                     {/case}
                   	{case value='99'}
-                  <tr class="danger">
+                  <tr style="background:#eee">
                     {/case}
                     {default /}
                   <tr>
@@ -126,7 +125,7 @@
                 </table>
                 </div>
                 <div style="clear:both;"></div>
-                <div style="text-align:center;">{$trans_list->render()}</div>
+                <div style="text-align:center; font-size: 0.9em">{$trans_list->render()}</div>
             </div>
         </div>
         <div style="height:20px;"></div>

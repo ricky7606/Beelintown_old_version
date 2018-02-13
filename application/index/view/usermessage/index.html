@@ -1,36 +1,35 @@
 {include file="header/index" header_type="$header_type" /}
 <link rel="stylesheet" href="/static/css/user_section.css">
 <link rel="stylesheet" href="/static/css/reveal.css">
+<script src="/static/js/wangEditor.min.js"></script>
 <div style="background-color:#F2F2F2;">
     <div id="user_profile" class="user_profile">
         <div style="margin:0 auto; width:1200px;">
             <div style="height:10px"></div>
-            <div>
-                <div style="height:200px; overflow:hidden;" id="profile_bg"><img src="{if condition='$userinfo.personal_bg' != ''}{$userinfo.personal_bg}{else /}/static/images/profile_bg.jpg{/if}" style="width:100%;opacity: 0.5;filter:alpha(opacity=50);"></div>
+            <div style="background: white; height: 280px; margin-bottom: 10px;">
+                <div style="height:120px; overflow:hidden;" id="profile_bg"><img src="{if condition='$userinfo.personal_bg' != ''}{$userinfo.personal_bg}{else /}/static/images/profile_bg.jpg{/if}" style="width:100%;opacity: 0.5;filter:alpha(opacity=50);"></div>
                 <div style="height:10px";></div>
                 <div style="width:310px; float:left; text-align:center; height:190px;"><img src="{if condition='$userinfo.personal_pic' != ''}{$userinfo.personal_pic}{else /}/static/images/profile_pic.jpg{/if}" class="profile_pic">&nbsp;</div>
                 <div style="width:890px; float:left; text-align:left;">
-                    <div style="width:590px; float:left; text-align:left;" class="content_title"> {$username}&nbsp;</div>
-                    <div style="width:300px; float:left; text-align:right;"><button type="button" class="btn btn-primary" style="height:45px; background-color:#004d9d; color:#FFF;" onclick="window.location.href='/index/userprofile'"><i class="am-icon-edit"></i> 编辑我的资料</button> <button type="button" class="btn btn-default" style="height:45px; " onclick="window.location.href='/index/login/Logout';"><i class="am-icon-sign-out"></i> 退出登录</button></div>
+                    <div style="width:580px; float:left; text-align:left;" class="content_title"> {$username}&nbsp;</div>
+                    <div style="margin-right:10px;width:300px; float:left; text-align:right;"><button type="button" class="btn btn-primary" style="height:45px; background-color:#004d9d; color:#FFF;font-size: 0.8em" onclick="window.location.href='/index/userprofile'"><i class="am-icon-edit"></i> 编辑我的资料</button> <button type="button" class="btn btn-default" style="height:40px; font-size: 0.8em" onclick="window.location.href='/index/login/Logout';"><i class="am-icon-sign-out"></i> 退出登录</button></div>
                     <div style="clear:both;"></div>
-                    <div>{if condition="$userinfo.brief != ''"}<span style="color:#03C;">{$userinfo.brief}</span>{else /}还没想好该怎么来介绍自己{/if}</div>
-                    <div style="height:20px";></div>
-                    <div style="line-height:50px;" class="tagwrap">{volist name="user_tag_list" id="usertag" length="6" empty="<span style='color:#03C;'>暂未选择标签</span>"}{if condition="$i==6"} <span class="tag_more" onclick="window.location.href='usertags'">更多...</span>{else /} <span class="tag">{$usertag.tag}</span>{/if}{/volist}</div>
+                    <div>{if condition="$userinfo.brief"}<span style="color:#03C;">{$userinfo.brief}</span>{else /}还没想好该怎么来介绍自己{/if}</div>
+                    <div style="line-height:40px;font-size: 0.9em" class="tagwrap">{volist name="user_tag_list" id="usertag" length="6" empty="<span style='color:#03C;'>暂未选择标签</span>"}{if condition="$i==6"} <span class="tag_more" onclick="window.location.href='usertags'">更多...</span>{else /} <span class="tag">{$usertag.tag}</span>{/if}{/volist}</div>
                 </div>
                 <div style="clear:both;"></div>
             </div>
         </div>
     </div>
-    <div style="height:10px"></div> 
     <div id="management">
         <div class="management_section">
-        	<div id="menu_items" style="background-color:#EEE;">
-            	<div class="inactive_menu" onclick="window.location.href='/index/userpending'">等我回答{if condition="$userinfo.pending_reminder>0"}<span class="reminder">{$userinfo.pending_reminder}</span>{/if}</div>
+            <div id="menu_items" style="background-color:#FFF;width:1180px;margin-bottom: 10px;float: left;">
+                <div class="inactive_menu" onclick="window.location.href='/index/userpending'">等我回答{if condition="$userinfo.pending_reminder>0"}<span class="reminder">{$userinfo.pending_reminder}</span>{/if}</div>
                 <div class="inactive_menu" onclick="window.location.href='/index/userqnas'">我的提问{if condition="$userinfo.reply_apply_reminder>0"}<span class="reminder">{$userinfo.reply_apply_reminder}</span>{/if}</div>
                 <div class="inactive_menu" onclick="window.location.href='/index/userreply'">我的回答{if condition="$userinfo.answer_reminder>0"}<span class="reminder">{$userinfo.answer_reminder}</span>{/if}</div>
                 <div class="inactive_menu" onclick="window.location.href='/index/userattention'">我的关注{if condition="$userinfo.attention_reminder>0"}<span class="reminder">{$userinfo.attention_reminder}</span>{/if}</div>
                 <div class="inactive_menu" onclick="window.location.href='/index/userfollow'">我的收藏</div>
-                <div class="inactive_menu" onclick="window.location.href='/index/usercoins'">我的比邻币{if condition="$userinfo.transaction_reminder>0"}<span class="reminder">{$userinfo.transaction_reminder}</span>{/if}</div>
+                <div class="inactive_menu"  onclick="window.location.href='/index/usercoin'">我的比邻币{if condition="$userinfo.transaction_reminder>0"}<span class="reminder">{$userinfo.transaction_reminder}</span>{/if}</div>
                 <div class="active_menu last_menu">消息中心{if condition="$userinfo.message_reminder>0"}<span class="reminder">{$userinfo.message_reminder}</span>{/if}</div>
                 <div style="clear:both;"></div>
             </div>
@@ -39,9 +38,9 @@
             </div>
             <div class="content_section">
                 <div style="height:20px"></div> 
-                {if condition="$userinfo.message_reminder>0"}<div style="width:100%; padding-left:20px; text-align:left; color:#900;"><span class="am-icon-envelope-o am-icon-sm" style="color:#06C; margin-left:10px;"></span> 共有{$userinfo.message_reminder}条新消息</div>{/if}
+                {if condition="$userinfo.message_reminder>0"}<div style="width:100%; padding-left:20px; text-align:left; color:#900;"><span class="am-icon-envelope-o am-icon-sm" style="color:#06C; margin-left:10px;font-size: 1em"> 共有{$userinfo.message_reminder}条新消息</span></div>{/if}
                 <div style="padding:20px; padding-top:10px;">
-                <table width="1000" class="table table-hover table-striped">
+                <table width="1000" style="font-size: 0.9em" class="table table-hover table-striped">
                   <thead>
                   <tr>
                     <th width="180">消息日期</th>
@@ -52,7 +51,7 @@
                   {volist name="message_list" id="message" empty="<tr><td colspan='3'>您还没有消息记录</td></tr>"}
                   {switch name="message.status"}
                   	{case value='0'}
-                  <tr class="warning unread">
+                  <tr class="unread">
                     {/case}
                   	{case value='1'}
                   <tr class="active">

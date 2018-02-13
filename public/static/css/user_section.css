@@ -28,5 +28,10 @@ a:hover { text-decoration:none;}
 .user_button_noanswer { color:#03C; padding:10px; font-weight:bold; margin:10px;}
 .content_box_user{width:100%; float:left; background-color:#FFF; padding:20px;}
 .text_box { width:100%; text-align:right; padding-right:40px;}
-.unread { font-weight:bold;}
+.unread {background: #fff}
+.unread td{ font-weight:normal;}
+.active {background: #fff}
+.active td{ color:#666666; font-weight:normal;}
+.active a{color:#666;}
 .le_button{font-size: 0.8em; font-weight: normal;color: #333}
+.table-responsive{font-size:0.9em;min-height: .01%; overflow-x: auto;}
